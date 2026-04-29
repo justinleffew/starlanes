@@ -8,9 +8,8 @@ import {
   osu,
   polaris,
 } from '../data/locations';
-import { offers } from '../data/offers';
 
-export function MultiUnitScreen({ onOpenOffer }: { onOpenOffer: (id: string) => void }) {
+export function MultiUnitScreen() {
   return (
     <div>
       <div className="eyebrow mb-2">Group › Multi-unit operations</div>
@@ -158,37 +157,6 @@ export function MultiUnitScreen({ onOpenOffer }: { onOpenOffer: (id: string) => 
         </Card>
       </div>
 
-      {/* Offer cards */}
-      <SectionHeader count="commercial paths">Where Doug starts.</SectionHeader>
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        {offers.map((offer) => (
-          <button
-            key={offer.id}
-            type="button"
-            onClick={() => onOpenOffer(offer.id)}
-            className="group overflow-hidden rounded-lg border border-line bg-surface text-left transition-colors hover:border-amber"
-          >
-            <div className="flex items-center justify-between border-b border-line-soft px-[18px] py-4">
-              <div className="text-[13px] font-medium text-ink">{offer.name}</div>
-              <div className="font-mono text-[10px] tracking-[0.05em] text-ink-3">{offer.timeline}</div>
-            </div>
-            <div className="px-[18px] py-5">
-              <div className="num-fig mb-2 text-[28px] font-medium leading-none text-ink">{offer.price}</div>
-              <ul className="space-y-1.5 text-[12.5px] leading-[1.5] text-ink-2">
-                {offer.details.map((d) => (
-                  <li key={d} className="flex gap-2">
-                    <span className="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-amber" />
-                    <span>{d}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-4 flex items-center gap-1.5 text-[12px] font-medium text-amber group-hover:text-amber-deep">
-                See details →
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
