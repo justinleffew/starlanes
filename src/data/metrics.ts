@@ -4,24 +4,24 @@ export const digestMetrics = {
   date: 'Friday · April 24, 2026 · Yesterday',
   greeting: 'Good morning, Doug.',
   syncedAt: 'Synced 6:14am · 11 sources',
-  yesterdayGross: 42180,
-  realizedRevenue: 34902,
+  yesterdayGross: 12400,
+  realizedRevenue: 10260,
   realizedDeltaPct: 8.4,
-  deferredDeposits: 4800,
-  comps: 2953,
-  giftCards: 1265,
+  deferredDeposits: 1420,
+  comps: 868,
+  giftCards: 372,
   laneOccupancy: 83,
-  uniqueGuests: 412,
+  uniqueGuests: 218,
   identifiedPct: 68,
   pendingExceptions: 3,
 };
 
 export const truthBreakdown = {
-  realized: 30370,
-  deferred: 7592,
-  comps: 2953,
-  giftCards: 1265,
-  squareGross: 42180,
+  realized: 8930,
+  deferred: 2232,
+  comps: 868,
+  giftCards: 372,
+  squareGross: 12400,
 };
 
 export const laneUtilization = [
@@ -48,8 +48,8 @@ export const digestExceptions: DigestException[] = [
     severity: 'High',
     title: 'Beverage package overrun — Hilton Polaris event',
     detail:
-      'Premium bar package billed at $2,400. Bar consumption rang $2,847 — 18% over package. Erin should review for next quote.',
-    amount: '$447 var.',
+      'Premium bar package billed at $720. Bar consumption rang $848 — 18% over package. Erin should review for next quote.',
+    amount: '$128 var.',
     systems: ['Triple Seat', 'Square'],
   },
   {
@@ -64,10 +64,10 @@ export const digestExceptions: DigestException[] = [
   {
     id: 'dx-3',
     severity: 'Low',
-    title: 'Loyalty enrollment opportunity — 41 unidentified high-spend guests',
+    title: 'Loyalty enrollment opportunity — 18 unidentified high-spend guests',
     detail:
       'Wi-Fi opt-in captured but no Square Customer linked. Avg spend $58 each. One-click batch enroll available.',
-    amount: '+$2,378 LTV',
+    amount: '+$1,044 LTV',
     systems: ['Embed', 'Square'],
   },
 ];
@@ -87,15 +87,15 @@ export const topSpenders: TopSpender[] = [
     initials: 'RB',
     avatarBg: '#5a6a8a',
     name: 'Maguire & Strickler LLC',
-    meta: 'Corporate event · 42 guests · Premium bar',
-    total: '$8,420',
+    meta: 'Corporate event · 18 guests · Premium bar',
+    total: '$1,860',
   },
   {
     id: 'cust-hahn',
     initials: 'MK',
     name: 'Marcus & Kelsey Hahn',
-    meta: 'Birthday party · 14 kids · Add-on arcade $320',
-    total: '$1,180',
+    meta: 'Birthday party · 14 kids · Add-on arcade $120',
+    total: '$420',
   },
   {
     id: 'cust-diana',
@@ -121,14 +121,14 @@ export const aiBrief = {
       kind: 'p' as const,
       runs: [
         { t: 'text' as const, value: 'Yesterday cleared ' },
-        { t: 'strong' as const, value: '$34,900 realized' },
+        { t: 'strong' as const, value: '$10,260 realized' },
         { t: 'text' as const, value: ', up 8% on the comparable Friday. The corporate room ran the Hilton group; the premium bar package ' },
         { t: 'em' as const, value: 'came in 18% over consumption' },
         { t: 'text' as const, value: ", so consider tightening the per-head bev allotment on next month's Hilton repeat. Bowling ran " },
         { t: 'strong' as const, value: '83% occupancy' },
         { t: 'text' as const, value: ' peak window, with Lanes 4 and 12 idle past 9pm — Tuesday/Wednesday promo audience could fill those. Three high-value corporate prospects opened inquiries from Eventective overnight; ' },
         { t: 'strong' as const, value: 'Maguire & Strickler is the priority follow-up' },
-        { t: 'text' as const, value: ' — they hosted a 200-pax holiday party with us in 2024.' },
+        { t: 'text' as const, value: ' — they hosted a 60-pax holiday party with us in 2024.' },
       ],
     },
   ],

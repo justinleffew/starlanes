@@ -6,8 +6,8 @@ export const polaris = {
   pillVariant: 'good' as const,
   pillLabel: 'Healthy',
   stats: [
-    { label: 'Yesterday revenue', figure: '34,902', currency: true, foot: '↑ 8.4% vs. last Fri', deltaDirection: 'up' as const },
-    { label: 'MTD', figure: '682K', currency: true, foot: '↑ 6.2% YoY', deltaDirection: 'up' as const },
+    { label: 'Yesterday revenue', figure: '10,260', currency: true, foot: '↑ 8.4% vs. last Fri', deltaDirection: 'up' as const },
+    { label: 'MTD', figure: '186K', currency: true, foot: '↑ 6.2% YoY', deltaDirection: 'up' as const },
     { label: 'Lane occupancy', figure: '83%', foot: '↑ 6 pts vs. avg', deltaDirection: 'up' as const },
   ],
 };
@@ -21,7 +21,7 @@ export const osu = {
   pillVariant: 'info' as const,
   pillLabel: 'Connected',
   stats: [
-    { label: 'Pre-launch bookings', figure: '147K', currency: true, foot: 'May–July deposits held', deltaDirection: 'flat' as const },
+    { label: 'Pre-launch bookings', figure: '44K', currency: true, foot: 'May–July deposits held', deltaDirection: 'flat' as const },
     { label: 'Configured', figure: '100%', foot: 'All sources mapped', deltaDirection: 'up' as const },
     { label: 'Days to open', figure: '18', foot: 'Pre-launch checklist 11/14', deltaDirection: 'flat' as const },
   ],
@@ -31,8 +31,8 @@ export const comparisonRows = [
   {
     metric: 'Revenue per square foot',
     sub: 'blended, monthly',
-    polaris: '$19.48',
-    osu: '$22.10',
+    polaris: '$7.20',
+    osu: '$8.10',
     osuTag: 'est.',
     delta: '+13.5%',
     deltaDirection: 'up' as const,
@@ -97,9 +97,9 @@ export const acquisitionReadiness = {
 };
 
 export const crossLocationReach = [
-  { label: 'Unified records', value: '8,247' },
-  { label: 'Identified at both', value: '412' },
-  { label: 'Cross-LTV', value: '$1,242', accent: true },
+  { label: 'Unified records', value: '2,418' },
+  { label: 'Identified at both', value: '124' },
+  { label: 'Cross-LTV', value: '$370', accent: true },
   { label: 'vs. single-loc avg', value: '2.8×', positive: true },
 ];
 

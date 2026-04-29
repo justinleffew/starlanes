@@ -92,7 +92,7 @@ const diana: CustomerProfile = {
   nextActionTitle: 'Send Stratton-Co holiday-party teaser',
   nextActionBody:
     'Diana booked her May retreat 9 weeks out — the same lead time would put a Q4 holiday-party touch in early October.',
-  nextActionValue: '$8K–12K',
+  nextActionValue: '$2.5K–4K',
   identitySources: [
     { name: 'Square Customer ID', via: 'SQ-4471892' },
     { name: 'Triple Seat contact', via: 'via email' },
@@ -146,7 +146,7 @@ const diana: CustomerProfile = {
       title: 'Booked corporate event · Stratton-Co retreat · May 18, 2026',
       detailLeading: '$180 deposit held · 28 guests confirmed · F&B package: Standard',
       systems: [{ system: 'Triple Seat' }],
-      amount: '$2,400 est.',
+      amount: '$1,400 est.',
     },
   ],
 };
