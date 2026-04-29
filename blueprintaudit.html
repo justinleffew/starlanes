@@ -1,0 +1,5815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Star Lanes Blueprint &mdash; Operating Diagnosis</title>
+<meta name="description" content="A diagnostic of why your operating system is costing you time, money, and exit value — and what it takes to fix it. Prepared for Doug Mechling by Justin Leffew, Blueprint AI." />
+
+<!-- Link preview meta (Open Graph) -->
+<meta property="og:title" content="The Star Lanes Blueprint" />
+<meta property="og:description" content="Eleven systems running four businesses under one roof. The diagnostic, the daily reality, and the path forward — prepared for Doug Mechling by Justin Leffew." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Blueprint AI" />
+
+<!-- iMessage / Twitter preview -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Star Lanes Blueprint" />
+<meta name="twitter:description" content="Eleven systems running four businesses under one roof. The diagnostic and the path forward." />
+
+<!-- Don't index this in search results - private client deliverable -->
+<meta name="robots" content="noindex, nofollow" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+  :root {
+    --ink: #0b0d10;
+    --ink-2: #14181d;
+    --ink-3: #1c2127;
+    --line: #2a3038;
+    --paper: #f4f1ea;
+    --paper-dim: #cfc8b8;
+    --rule: #6b7280;
+
+    /* Five truths — distinct, used sparingly */
+    --financial: #ffb74d;   /* amber */
+    --customer:  #4dd0a8;   /* mint */
+    --event:     #f06b6b;   /* red */
+    --ops:       #6b9bff;   /* blue */
+    --marketing: #c79bff;   /* lavender */
+
+    --warn: #ff5c5c;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(255,183,77,0.04), transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(107,155,255,0.05), transparent 50%),
+      var(--ink);
+    background-attachment: fixed;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+  }
+
+  /* ============ HEADER ============ */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--financial);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--financial);
+    font-weight: 400;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .meta strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ INTRO ============ */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 96px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-lead {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  .intro-lead .accent {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .intro-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--paper-dim);
+  }
+
+  .intro-body p { margin: 0 0 16px; }
+  .intro-body p:last-child { margin-bottom: 0; }
+  .intro-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ SECTION HEADER ============ */
+  .section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 48px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--paper-dim);
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-sub {
+    grid-column: 2;
+    color: var(--paper-dim);
+    font-size: 16px;
+    margin-top: 12px;
+    max-width: 720px;
+  }
+
+  /* ============ LEGEND (FIVE TRUTHS) ============ */
+  .truths {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 64px;
+  }
+
+  .truth {
+    border: 1px solid var(--line);
+    padding: 20px;
+    background: var(--ink-2);
+    position: relative;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .truth:hover {
+    transform: translateY(-2px);
+    border-color: var(--paper-dim);
+  }
+
+  .truth::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--c);
+  }
+
+  .truth-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 12px;
+  }
+
+  .truth-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .truth-q {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.45;
+  }
+
+  /* ============ SYSTEMS GRID ============ */
+  .systems-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+
+  .system {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 18px;
+    position: relative;
+    min-height: 168px;
+    transition: all 0.25s ease;
+  }
+
+  .system:hover {
+    border-color: var(--paper-dim);
+    background: var(--ink-3);
+  }
+
+  .system-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .system-name {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .system-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--paper-dim);
+    text-transform: uppercase;
+    border: 1px solid var(--line);
+    padding: 3px 6px;
+    white-space: nowrap;
+    margin-left: 8px;
+  }
+
+  .system-role {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.45;
+    margin-bottom: 14px;
+    min-height: 38px;
+  }
+
+  .truth-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 3px 7px;
+    border-radius: 99px;
+    border: 1px solid;
+  }
+
+  .pill[data-truth="financial"]  { color: var(--financial); border-color: var(--financial); }
+  .pill[data-truth="customer"]   { color: var(--customer);  border-color: var(--customer); }
+  .pill[data-truth="event"]      { color: var(--event);     border-color: var(--event); }
+  .pill[data-truth="ops"]        { color: var(--ops);       border-color: var(--ops); }
+  .pill[data-truth="marketing"]  { color: var(--marketing); border-color: var(--marketing); }
+
+  .system-broken {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--warn);
+    box-shadow: 0 0 0 4px rgba(255,92,92,0.15);
+  }
+
+  /* ============ COLLISION DIAGRAM ============ */
+  .collision-frame {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 48px 40px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .collision-frame::before {
+    content: 'CASE STUDY / 01';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    transform: translateY(-50%);
+  }
+
+  .scenario {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    max-width: 900px;
+  }
+
+  .scenario .quote-mark {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .scenario-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .collision-rows {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+
+  .collision-row {
+    background: var(--ink-2);
+    display: grid;
+    grid-template-columns: 200px 1fr 220px 120px;
+    gap: 24px;
+    padding: 18px 20px;
+    align-items: center;
+    transition: background 0.2s ease;
+  }
+
+  .collision-row:hover {
+    background: var(--ink-3);
+  }
+
+  .collision-row.header {
+    background: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    padding: 12px 20px;
+  }
+
+  .col-system {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+
+  .col-says {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--paper);
+  }
+
+  .col-truth {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .col-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .status-correct { color: var(--customer); }
+  .status-wrong   { color: var(--warn); }
+  .status-blind   { color: var(--paper-dim); }
+
+  .truth-financial { color: var(--financial); }
+  .truth-customer  { color: var(--customer); }
+  .truth-event     { color: var(--event); }
+  .truth-ops       { color: var(--ops); }
+  .truth-marketing { color: var(--marketing); }
+
+  .verdict {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .verdict-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 12px;
+  }
+
+  .verdict-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .verdict-text .accent { color: var(--warn); font-style: italic; }
+  .verdict-text .accent-good { color: var(--customer); font-style: italic; }
+
+  /* ============ BREAK CARDS ============ */
+  .breaks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 96px;
+  }
+
+  .break {
+    border: 1px solid var(--line);
+    padding: 28px 24px;
+    background: var(--ink-2);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .break:hover {
+    border-color: var(--warn);
+  }
+
+  .break-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--warn);
+    margin-bottom: 16px;
+  }
+
+  .break-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .break-body {
+    font-size: 14px;
+    color: var(--paper-dim);
+    line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .break-cost {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--financial);
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+
+  /* ============ ARCHITECTURE SECTION ============ */
+  .architecture {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 64px;
+  }
+
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .arch-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .arch-headline em {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .arch-body {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .arch-body p { margin: 0 0 16px; }
+  .arch-body p:last-child { margin-bottom: 0; }
+  .arch-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .footer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 960px) {
+    .page { padding: 48px 24px 80px; }
+    .masthead { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    .intro { grid-template-columns: 1fr; gap: 32px; }
+    .truths { grid-template-columns: repeat(2, 1fr); }
+    .systems-grid { grid-template-columns: repeat(2, 1fr); }
+    .collision-row { grid-template-columns: 1fr; gap: 8px; }
+    .col-status { text-align: left; }
+    .breaks { grid-template-columns: 1fr; }
+    .arch-grid { grid-template-columns: 1fr; gap: 24px; }
+    .verdict { grid-template-columns: 1fr; }
+    h1 { font-size: 48px; }
+    .arch-headline { font-size: 26px; }
+  }
+
+
+  :root {
+    --ink: #0b0d10;
+    --ink-2: #14181d;
+    --ink-3: #1c2127;
+    --line: #2a3038;
+    --paper: #f4f1ea;
+    --paper-dim: #cfc8b8;
+    --rule: #6b7280;
+
+    --financial: #ffb74d;
+    --customer:  #4dd0a8;
+    --event:     #f06b6b;
+    --ops:       #6b9bff;
+    --marketing: #c79bff;
+
+    --warn: #ff5c5c;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 80% 0%, rgba(255,183,77,0.06), transparent 50%),
+      radial-gradient(ellipse at 0% 100%, rgba(255,92,92,0.04), transparent 50%),
+      var(--ink);
+    background-attachment: fixed;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--warn);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--warn);
+    font-weight: 400;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .meta strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ INTRO ============ */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 96px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-lead {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  .intro-lead .accent {
+    color: var(--warn);
+    font-style: italic;
+  }
+
+  .intro-lead .accent-money {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .intro-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--paper-dim);
+  }
+
+  .intro-body p { margin: 0 0 16px; }
+  .intro-body p:last-child { margin-bottom: 0; }
+  .intro-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ HERO NUMBER ============ */
+  .hero-number {
+    text-align: center;
+    padding: 80px 0 96px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 96px;
+    position: relative;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 32px;
+  }
+
+  .hero-figure {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(120px, 18vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--financial);
+    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-figure .currency {
+    font-size: 0.5em;
+    vertical-align: top;
+    margin-right: 0.05em;
+    font-style: italic;
+    color: var(--paper-dim);
+  }
+
+  .hero-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--paper);
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .hero-caveat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-top: 32px;
+  }
+
+  /* ============ SECTION HEADER ============ */
+  .section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 48px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--paper-dim);
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-sub {
+    grid-column: 2;
+    color: var(--paper-dim);
+    font-size: 16px;
+    margin-top: 12px;
+    max-width: 720px;
+  }
+
+  /* ============ FOUR BLEEDS ============ */
+  .bleeds {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 96px;
+  }
+
+  .bleed {
+    background: var(--ink-2);
+    padding: 40px 40px;
+    display: grid;
+    grid-template-columns: 60px 1fr 280px;
+    gap: 32px;
+    align-items: start;
+    transition: background 0.25s ease;
+    position: relative;
+  }
+
+  .bleed:hover {
+    background: var(--ink-3);
+  }
+
+  .bleed::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--warn);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .bleed:hover::before {
+    opacity: 1;
+  }
+
+  .bleed-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--warn);
+    padding-top: 6px;
+  }
+
+  .bleed-content h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    font-weight: 400;
+  }
+
+  .bleed-content p {
+    font-size: 15px;
+    color: var(--paper-dim);
+    line-height: 1.65;
+    margin: 0 0 12px;
+  }
+
+  .bleed-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .bleed-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--paper);
+    border-left: 2px solid var(--financial);
+    padding: 6px 0 6px 16px;
+    margin: 16px 0;
+  }
+
+  .bleed-cost {
+    border-left: 1px solid var(--line);
+    padding-left: 28px;
+  }
+
+  .bleed-cost-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 12px;
+  }
+
+  .bleed-cost-figure {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--financial);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .bleed-cost-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--paper-dim);
+    text-transform: uppercase;
+  }
+
+  /* ============ MATH BREAKDOWN ============ */
+  .math-frame {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+    position: relative;
+  }
+
+  .math-frame::before {
+    content: 'THE MATH / SHOWN';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    transform: translateY(-50%);
+  }
+
+  .math-intro {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    margin-bottom: 40px;
+    max-width: 800px;
+    color: var(--paper);
+  }
+
+  .math-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 32px;
+  }
+
+  .math-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--ink);
+  }
+
+  .math-table th:last-child,
+  .math-table td:last-child {
+    text-align: right;
+  }
+
+  .math-table td {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+
+  .math-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .math-table .row-label {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--paper);
+  }
+
+  .math-table .row-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--paper-dim);
+  }
+
+  .math-table .row-total {
+    background: var(--ink-3);
+  }
+
+  .math-table .row-total .row-label {
+    font-style: italic;
+    color: var(--financial);
+  }
+
+  .math-table .row-total .row-value {
+    color: var(--financial);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .math-assumptions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .assumption {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.55;
+  }
+
+  .assumption-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 6px;
+  }
+
+  /* ============ TIMELINE ============ */
+  .timeline {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+  }
+
+  .timeline-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    max-width: 760px;
+  }
+
+  .timeline-headline em {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .timeline-sub {
+    color: var(--paper-dim);
+    font-size: 15px;
+    margin-bottom: 48px;
+    max-width: 680px;
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .timeline-cell {
+    background: var(--ink-2);
+    padding: 28px 24px;
+    position: relative;
+  }
+
+  .timeline-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 16px;
+  }
+
+  .timeline-figure {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .timeline-figure-1 { color: var(--paper); }
+  .timeline-figure-2 { color: var(--financial); }
+  .timeline-figure-3 { color: var(--warn); }
+  .timeline-figure-4 { color: var(--warn); }
+
+  .timeline-context {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.5;
+  }
+
+  .timeline-context strong {
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  /* ============ ACQUISITION CALLOUT ============ */
+  .acquisition {
+    background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--financial);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+  }
+
+  .acq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .acq-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .acq-headline em {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .acq-body {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .acq-body p { margin: 0 0 16px; }
+  .acq-body p:last-child { margin-bottom: 0; }
+  .acq-body strong { color: var(--paper); font-weight: 500; }
+
+  .acq-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--paper);
+    line-height: 1.5;
+    margin-top: 24px;
+    padding: 4px 0 4px 20px;
+    border-left: 2px solid var(--financial);
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .footer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 960px) {
+    .page { padding: 48px 24px 80px; }
+    .masthead { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    .intro { grid-template-columns: 1fr; gap: 32px; }
+    .bleed { grid-template-columns: 1fr; gap: 16px; }
+    .bleed-cost { border-left: none; border-top: 1px solid var(--line); padding: 20px 0 0; }
+    .math-assumptions { grid-template-columns: 1fr; }
+    .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+    .acq-grid { grid-template-columns: 1fr; gap: 24px; }
+    .math-frame, .timeline, .acquisition { padding: 32px 24px; }
+    h1 { font-size: 48px; }
+    .acq-headline, .timeline-headline { font-size: 26px; }
+    .hero-figure { font-size: 100px; }
+    .hero-sub { font-size: 22px; }
+    .math-table th, .math-table td { padding: 10px 8px; font-size: 12px; }
+  }
+
+
+  :root {
+    --ink: #0b0d10;
+    --ink-2: #14181d;
+    --ink-3: #1c2127;
+    --line: #2a3038;
+    --paper: #f4f1ea;
+    --paper-dim: #cfc8b8;
+    --rule: #6b7280;
+
+    --financial: #ffb74d;
+    --customer:  #4dd0a8;
+    --event:     #f06b6b;
+    --ops:       #6b9bff;
+    --marketing: #c79bff;
+
+    --warn: #ff5c5c;
+    --good: #4dd0a8;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 0% 0%, rgba(77,208,168,0.05), transparent 50%),
+      radial-gradient(ellipse at 100% 100%, rgba(107,155,255,0.04), transparent 50%),
+      var(--ink);
+    background-attachment: fixed;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--good);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--good);
+    font-weight: 400;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .meta strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ INTRO ============ */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 96px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-lead {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  .intro-lead .accent {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .intro-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--paper-dim);
+  }
+
+  .intro-body p { margin: 0 0 16px; }
+  .intro-body p:last-child { margin-bottom: 0; }
+  .intro-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ THE PRINCIPLE ============ */
+  .principle {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--good);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .principle-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 36px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .principle-headline em {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .principle-body {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .principle-body p { margin: 0 0 16px; }
+  .principle-body p:last-child { margin-bottom: 0; }
+  .principle-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ SECTION HEADER ============ */
+  .section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 48px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--paper-dim);
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-sub {
+    grid-column: 2;
+    color: var(--paper-dim);
+    font-size: 16px;
+    margin-top: 12px;
+    max-width: 720px;
+  }
+
+  /* ============ ARCHITECTURE DIAGRAM ============ */
+  .arch-diagram {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 64px;
+    position: relative;
+  }
+
+  .arch-diagram::before {
+    content: 'SYSTEM ARCHITECTURE / READ-ONLY';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    transform: translateY(-50%);
+  }
+
+  /* TOP LAYER — sources */
+  .layer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .layer-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .source-systems {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .source-pill {
+    background: var(--ink-3);
+    border: 1px solid var(--line);
+    padding: 14px 10px;
+    text-align: center;
+    transition: all 0.25s ease;
+  }
+
+  .source-pill:hover {
+    border-color: var(--paper-dim);
+    transform: translateY(-2px);
+  }
+
+  .source-name {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .source-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  /* CONNECTORS */
+  .connectors {
+    height: 60px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    position: relative;
+    margin: 8px 0;
+  }
+
+  .connector {
+    position: relative;
+  }
+
+  .connector::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--good) 0%, transparent 100%);
+    opacity: 0.4;
+  }
+
+  .connector::after {
+    content: '↓';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--good);
+    font-size: 14px;
+    opacity: 0.6;
+  }
+
+  /* MIDDLE LAYER — the operating layer */
+  .operating-layer {
+    background: linear-gradient(180deg, rgba(77,208,168,0.08) 0%, rgba(77,208,168,0.02) 100%);
+    border: 1px solid var(--good);
+    border-radius: 4px;
+    padding: 32px 32px 24px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+
+  .operating-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--good);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .operating-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.15;
+    text-align: center;
+    margin-bottom: 32px;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+
+  .operating-headline em {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .operating-functions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .op-function {
+    background: var(--ink-3);
+    border: 1px solid var(--line);
+    padding: 18px;
+  }
+
+  .op-fn-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--good);
+    margin-bottom: 8px;
+  }
+
+  .op-fn-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .op-fn-body {
+    font-size: 12px;
+    color: var(--paper-dim);
+    line-height: 1.45;
+  }
+
+  /* BOTTOM LAYER — destinations */
+  .destinations {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .dest-pill {
+    background: var(--ink-3);
+    border: 1px solid var(--line);
+    padding: 16px;
+    text-align: center;
+  }
+
+  .dest-name {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    margin-bottom: 4px;
+    color: var(--paper);
+  }
+
+  .dest-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .arch-callouts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .callout {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.55;
+  }
+
+  .callout-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--good);
+    margin-bottom: 6px;
+  }
+
+  /* ============ RESOLUTION CASE STUDY ============ */
+  .resolution-frame {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 48px 40px;
+    margin-bottom: 96px;
+    position: relative;
+  }
+
+  .resolution-frame::before {
+    content: 'CASE STUDY / 02 — THE SAME GUEST, RESOLVED';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    transform: translateY(-50%);
+  }
+
+  .scenario {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    max-width: 900px;
+  }
+
+  .scenario .quote-mark {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .scenario-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .resolution-rows {
+    display: grid;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 32px;
+  }
+
+  .resolution-row {
+    background: var(--ink-2);
+    display: grid;
+    grid-template-columns: 200px 1fr 220px 120px;
+    gap: 24px;
+    padding: 18px 20px;
+    align-items: center;
+    transition: background 0.2s ease;
+  }
+
+  .resolution-row:hover {
+    background: var(--ink-3);
+  }
+
+  .resolution-row.header {
+    background: var(--ink);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    padding: 12px 20px;
+  }
+
+  .col-system {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+
+  .col-says {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--paper);
+  }
+
+  .col-truth {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .col-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+  .status-correct { color: var(--good); }
+
+  .truth-financial { color: var(--financial); }
+  .truth-customer  { color: var(--customer); }
+  .truth-event     { color: var(--event); }
+
+  .verdict {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .verdict-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 12px;
+  }
+
+  .verdict-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .verdict-text .accent-good { color: var(--good); font-style: italic; }
+  .verdict-text .accent-money { color: var(--financial); font-style: italic; }
+
+  /* ============ THREE NON-NEGOTIABLES ============ */
+  .non-neg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 96px;
+  }
+
+  .nn-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 32px 28px;
+    transition: all 0.3s ease;
+  }
+
+  .nn-card:hover {
+    border-color: var(--good);
+    transform: translateY(-2px);
+  }
+
+  .nn-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--good);
+    margin-bottom: 16px;
+  }
+
+  .nn-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .nn-title em {
+    font-style: italic;
+    color: var(--good);
+  }
+
+  .nn-body {
+    font-size: 14px;
+    color: var(--paper-dim);
+    line-height: 1.6;
+  }
+
+  /* ============ WHAT THIS IS NOT ============ */
+  .not-section {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 48px 40px;
+    margin-bottom: 96px;
+  }
+
+  .not-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .not-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .not-headline em {
+    font-style: italic;
+    color: var(--warn);
+  }
+
+  .not-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .not-item {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    align-items: start;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+  }
+
+  .not-item .x {
+    color: var(--warn);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+  }
+
+  .not-item strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .footer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 960px) {
+    .page { padding: 48px 24px 80px; }
+    .masthead { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    .intro { grid-template-columns: 1fr; gap: 32px; }
+    .principle-grid { grid-template-columns: 1fr; gap: 24px; }
+    .source-systems { grid-template-columns: repeat(3, 1fr); }
+    .connectors { grid-template-columns: repeat(3, 1fr); }
+    .operating-functions { grid-template-columns: repeat(2, 1fr); }
+    .destinations { grid-template-columns: repeat(2, 1fr); }
+    .arch-callouts { grid-template-columns: 1fr; }
+    .resolution-row { grid-template-columns: 1fr; gap: 8px; }
+    .col-status { text-align: left; }
+    .verdict { grid-template-columns: 1fr; }
+    .non-neg { grid-template-columns: 1fr; }
+    .not-grid { grid-template-columns: 1fr; gap: 24px; }
+    .arch-diagram, .principle, .resolution-frame, .not-section { padding: 32px 24px; }
+    h1 { font-size: 48px; }
+    .principle-headline, .operating-headline, .not-headline { font-size: 26px; }
+  }
+
+
+  :root {
+    --ink: #0b0d10;
+    --ink-2: #14181d;
+    --ink-3: #1c2127;
+    --line: #2a3038;
+    --paper: #f4f1ea;
+    --paper-dim: #cfc8b8;
+    --rule: #6b7280;
+
+    --financial: #ffb74d;
+    --customer:  #4dd0a8;
+    --event:     #f06b6b;
+    --ops:       #6b9bff;
+    --marketing: #c79bff;
+
+    --warn: #ff5c5c;
+    --good: #4dd0a8;
+
+    /* Three path colors */
+    --path-1: #6b9bff;
+    --path-2: #4dd0a8;
+    --path-3: #ffb74d;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 30% 0%, rgba(107,155,255,0.04), transparent 50%),
+      radial-gradient(ellipse at 70% 100%, rgba(255,183,77,0.05), transparent 50%),
+      var(--ink);
+    background-attachment: fixed;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--financial);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--financial);
+    font-weight: 400;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .meta strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ INTRO ============ */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 96px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-lead {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  .intro-lead .accent {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .intro-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--paper-dim);
+  }
+
+  .intro-body p { margin: 0 0 16px; }
+  .intro-body p:last-child { margin-bottom: 0; }
+  .intro-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ SECTION HEADER ============ */
+  .section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 48px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--paper-dim);
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-sub {
+    grid-column: 2;
+    color: var(--paper-dim);
+    font-size: 16px;
+    margin-top: 12px;
+    max-width: 720px;
+  }
+
+  /* ============ THREE PATH CARDS ============ */
+  .paths {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .path {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .path:hover {
+    transform: translateY(-3px);
+    border-color: var(--c);
+  }
+
+  .path::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--c);
+  }
+
+  .path[data-path="1"] { --c: var(--path-1); }
+  .path[data-path="2"] { --c: var(--path-2); }
+  .path[data-path="3"] { --c: var(--path-3); }
+
+  .path-header {
+    padding: 32px 28px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .path-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 16px;
+  }
+
+  .path-name {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .path-question {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--paper-dim);
+    line-height: 1.45;
+    margin-bottom: 24px;
+  }
+
+  .path-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .path-price-figure {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--c);
+    font-weight: 400;
+  }
+
+  .path-price-figure .currency {
+    font-size: 0.6em;
+    vertical-align: top;
+    color: var(--paper-dim);
+    font-style: italic;
+  }
+
+  .path-price-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .path-recurring {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--paper-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .path-recurring strong {
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .path-body {
+    padding: 28px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .path-summary {
+    font-size: 14px;
+    color: var(--paper-dim);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .path-summary strong {
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .path-includes-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .path-includes {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    flex: 1;
+  }
+
+  .path-includes li {
+    font-size: 13px;
+    color: var(--paper);
+    line-height: 1.5;
+    padding: 6px 0 6px 18px;
+    position: relative;
+  }
+
+  .path-includes li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--c);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .path-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .path-meta-cell {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .path-meta-label {
+    color: var(--paper-dim);
+    margin-bottom: 4px;
+  }
+
+  .path-meta-value {
+    color: var(--paper);
+    font-size: 12px;
+  }
+
+  /* ============ RECOMMENDATION CALLOUT ============ */
+  .recommendation {
+    background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--good);
+    padding: 48px 40px;
+    margin-bottom: 96px;
+  }
+
+  .rec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .rec-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .rec-headline em {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .rec-body {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .rec-body p { margin: 0 0 16px; }
+  .rec-body p:last-child { margin-bottom: 0; }
+  .rec-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ ROI MATH ============ */
+  .roi-frame {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+    position: relative;
+  }
+
+  .roi-frame::before {
+    content: 'PAYBACK / SHOWN';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    transform: translateY(-50%);
+  }
+
+  .roi-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    max-width: 760px;
+  }
+
+  .roi-headline em {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .roi-sub {
+    color: var(--paper-dim);
+    font-size: 15px;
+    margin-bottom: 40px;
+    max-width: 680px;
+  }
+
+  .roi-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .roi-table th {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--ink);
+  }
+
+  .roi-table th:not(:first-child),
+  .roi-table td:not(:first-child) {
+    text-align: right;
+  }
+
+  .roi-table td {
+    padding: 16px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+
+  .roi-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .roi-table .row-label {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    color: var(--paper);
+  }
+
+  .roi-table .row-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--paper-dim);
+  }
+
+  .roi-table .row-payback {
+    background: var(--ink-3);
+  }
+
+  .roi-table .row-payback .row-label {
+    font-style: italic;
+    color: var(--good);
+  }
+
+  .roi-table .row-payback .row-value {
+    color: var(--good);
+    font-weight: 700;
+  }
+
+  .roi-note {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.55;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+    font-style: italic;
+  }
+
+  /* ============ NEXT STEP ============ */
+  .next-step {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 48px 40px;
+    margin-bottom: 64px;
+  }
+
+  .ns-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .ns-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .ns-headline em {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .ns-body {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .ns-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ns-steps li {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 16px;
+    align-items: start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ns-steps li:last-child {
+    border-bottom: none;
+  }
+
+  .ns-steps li:first-child {
+    padding-top: 0;
+  }
+
+  .ns-num {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--good);
+    line-height: 1;
+  }
+
+  .ns-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--paper);
+  }
+
+  .ns-text strong { font-weight: 500; }
+  .ns-text em { color: var(--paper-dim); font-style: italic; font-size: 13px; }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .footer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 960px) {
+    .page { padding: 48px 24px 80px; }
+    .masthead { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    .intro { grid-template-columns: 1fr; gap: 32px; }
+    .paths { grid-template-columns: 1fr; }
+    .rec-grid, .ns-grid { grid-template-columns: 1fr; gap: 24px; }
+    .roi-frame, .recommendation, .next-step { padding: 32px 24px; }
+    .roi-table th, .roi-table td { padding: 10px 8px; font-size: 12px; }
+    h1 { font-size: 48px; }
+    .rec-headline, .roi-headline { font-size: 24px; }
+    .ns-headline { font-size: 22px; }
+    .path-name { font-size: 28px; }
+    .path-price-figure { font-size: 44px; }
+  }
+
+
+  :root {
+    --ink: #0b0d10;
+    --ink-2: #14181d;
+    --ink-3: #1c2127;
+    --line: #2a3038;
+    --paper: #f4f1ea;
+    --paper-dim: #cfc8b8;
+    --rule: #6b7280;
+
+    --financial: #ffb74d;
+    --customer:  #4dd0a8;
+    --event:     #f06b6b;
+    --ops:       #6b9bff;
+    --marketing: #c79bff;
+
+    --warn: #ff5c5c;
+    --good: #4dd0a8;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,183,77,0.07), transparent 60%),
+      radial-gradient(ellipse at 0% 100%, rgba(255,92,92,0.04), transparent 50%),
+      var(--ink);
+    background-attachment: fixed;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+  }
+
+  /* ============ MASTHEAD ============ */
+  .masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--financial);
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(48px, 6vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--financial);
+    font-weight: 400;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .meta strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ INTRO ============ */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 96px;
+    padding-bottom: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro-lead {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  .intro-lead .accent {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .intro-body {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--paper-dim);
+  }
+
+  .intro-body p { margin: 0 0 16px; }
+  .intro-body p:last-child { margin-bottom: 0; }
+  .intro-body strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ HERO NUMBER ============ */
+  .hero-number {
+    text-align: center;
+    padding: 80px 0 96px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 96px;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 32px;
+  }
+
+  .hero-figure {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(120px, 18vw, 240px);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    color: var(--financial);
+    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-figure .currency {
+    font-size: 0.5em;
+    vertical-align: top;
+    margin-right: 0.05em;
+    font-style: italic;
+    color: var(--paper-dim);
+  }
+
+  .hero-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.3;
+    color: var(--paper);
+    max-width: 740px;
+    margin: 0 auto;
+  }
+
+  .hero-caveat {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-top: 32px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  /* ============ SECTION HEADER ============ */
+  .section-header {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 48px;
+  }
+
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--paper-dim);
+    letter-spacing: 0.1em;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 40px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+
+  .section-sub {
+    grid-column: 2;
+    color: var(--paper-dim);
+    font-size: 16px;
+    margin-top: 12px;
+    max-width: 720px;
+  }
+
+  /* ============ MULTIPLES TABLE ============ */
+  .multiples-frame {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+    position: relative;
+  }
+
+  .multiples-frame::before {
+    content: 'INDUSTRY DATA / 2025–2026';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    transform: translateY(-50%);
+  }
+
+  .mult-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    max-width: 780px;
+  }
+
+  .mult-headline em {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .mult-sub {
+    color: var(--paper-dim);
+    font-size: 15px;
+    margin-bottom: 40px;
+    max-width: 720px;
+  }
+
+  .mult-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 24px;
+  }
+
+  .mult-cell {
+    background: var(--ink-2);
+    padding: 32px 28px;
+    transition: background 0.2s ease;
+  }
+
+  .mult-cell:hover {
+    background: var(--ink-3);
+  }
+
+  .mult-tier {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 16px;
+  }
+
+  .mult-multiple {
+    font-family: 'Fraunces', serif;
+    font-size: 56px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .mult-multiple-1 { color: var(--paper-dim); }
+  .mult-multiple-2 { color: var(--paper); }
+  .mult-multiple-3 { color: var(--financial); }
+
+  .mult-multiple .x {
+    font-size: 0.6em;
+    color: var(--paper-dim);
+    font-style: italic;
+  }
+
+  .mult-tier-name {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    line-height: 1.25;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .mult-tier-desc {
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.5;
+  }
+
+  .mult-citation {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--paper-dim);
+    line-height: 1.7;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+    font-style: italic;
+  }
+
+  /* ============ SCENARIO COMPARISON ============ */
+  .scenarios {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .scenario-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .scenario-card.dirty {
+    border-color: rgba(255,92,92,0.3);
+  }
+
+  .scenario-card.clean {
+    border-color: rgba(77,208,168,0.3);
+  }
+
+  .scenario-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 4px;
+  }
+
+  .scenario-card.dirty::before {
+    background: var(--warn);
+  }
+
+  .scenario-card.clean::before {
+    background: var(--good);
+  }
+
+  .scenario-header {
+    padding: 32px 32px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .scenario-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .scenario-card.dirty .scenario-tag { color: var(--warn); }
+  .scenario-card.clean .scenario-tag { color: var(--good); }
+
+  .scenario-name {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .scenario-name em { font-style: italic; }
+  .scenario-card.dirty .scenario-name em { color: var(--warn); }
+  .scenario-card.clean .scenario-name em { color: var(--good); }
+
+  .scenario-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--paper-dim);
+    line-height: 1.45;
+  }
+
+  .scenario-body {
+    padding: 28px 32px 32px;
+  }
+
+  .scenario-math {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .math-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+
+  .math-row:last-child {
+    border-bottom: none;
+  }
+
+  .math-row.total {
+    border-top: 2px solid var(--line);
+    border-bottom: none;
+    padding-top: 18px;
+    margin-top: 6px;
+  }
+
+  .math-row-label {
+    font-size: 14px;
+    color: var(--paper-dim);
+  }
+
+  .math-row.total .math-row-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 17px;
+  }
+
+  .scenario-card.dirty .math-row.total .math-row-label { color: var(--warn); }
+  .scenario-card.clean .math-row.total .math-row-label { color: var(--good); }
+
+  .math-row-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .math-row.total .math-row-value {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    color: var(--paper);
+  }
+
+  .scenario-card.dirty .math-row.total .math-row-value { color: var(--warn); }
+  .scenario-card.clean .math-row.total .math-row-value { color: var(--good); }
+
+  .scenario-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--paper);
+    line-height: 1.45;
+    padding: 12px 0 12px 16px;
+    border-left: 2px solid;
+  }
+
+  .scenario-card.dirty .scenario-quote { border-color: var(--warn); }
+  .scenario-card.clean .scenario-quote { border-color: var(--good); }
+
+  /* ============ THE GAP ============ */
+  .the-gap {
+    background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--financial);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+    text-align: center;
+  }
+
+  .gap-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+  }
+
+  .gap-figure {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(72px, 11vw, 144px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--financial);
+    margin-bottom: 24px;
+    font-weight: 400;
+  }
+
+  .gap-figure .currency {
+    font-size: 0.55em;
+    vertical-align: top;
+    color: var(--paper-dim);
+    font-style: italic;
+  }
+
+  .gap-text {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--paper);
+    max-width: 800px;
+    margin: 0 auto 32px;
+  }
+
+  .gap-comparison {
+    display: inline-grid;
+    grid-template-columns: auto auto auto;
+    gap: 24px;
+    align-items: center;
+    padding: 24px 36px;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .gap-comp-cell {
+    color: var(--paper-dim);
+  }
+
+  .gap-comp-arrow {
+    color: var(--good);
+    font-size: 16px;
+  }
+
+  .gap-comp-cell strong {
+    color: var(--paper);
+    font-weight: 500;
+  }
+
+  .gap-comp-cell .highlight {
+    color: var(--financial);
+    font-weight: 700;
+  }
+
+  /* ============ FIVE QUESTIONS ============ */
+  .questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .question {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 28px 24px;
+    transition: all 0.3s ease;
+  }
+
+  .question:hover {
+    border-color: var(--financial);
+  }
+
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--financial);
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+
+  .q-status {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .q-state {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.5;
+  }
+
+  .q-state-label {
+    color: var(--paper-dim);
+    margin-bottom: 4px;
+  }
+
+  .q-state-now { color: var(--warn); }
+  .q-state-after { color: var(--good); }
+
+  .questions-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--paper-dim);
+    line-height: 1.7;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line);
+    font-style: italic;
+    max-width: 800px;
+  }
+
+  /* ============ ROI VS BUILD COST ============ */
+  .roi-frame {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 56px 48px;
+    margin-bottom: 96px;
+    position: relative;
+  }
+
+  .roi-frame::before {
+    content: 'PUNCH LINE';
+    position: absolute;
+    top: -1px;
+    left: 24px;
+    background: var(--ink);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--financial);
+    transform: translateY(-50%);
+  }
+
+  .roi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .roi-headline {
+    font-family: 'Fraunces', serif;
+    font-size: 38px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .roi-headline em {
+    color: var(--financial);
+    font-style: italic;
+  }
+
+  .roi-body {
+    color: var(--paper-dim);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .roi-body p { margin: 0 0 16px; }
+  .roi-body p:last-child { margin-bottom: 0; }
+  .roi-body strong { color: var(--paper); font-weight: 500; }
+
+  .roi-ratio {
+    margin-top: 24px;
+    padding: 24px 28px;
+    background: var(--ink);
+    border: 1px solid var(--line);
+  }
+
+  .roi-ratio-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 8px;
+  }
+
+  .roi-ratio-figure {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--financial);
+  }
+
+  .roi-ratio-figure em {
+    font-style: italic;
+    color: var(--paper);
+  }
+
+  /* ============ DISCLAIMER ============ */
+  .disclaimer {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 32px 32px;
+    margin-bottom: 48px;
+    font-size: 13px;
+    color: var(--paper-dim);
+    line-height: 1.7;
+  }
+
+  .disclaimer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper);
+    margin-bottom: 12px;
+  }
+
+  .disclaimer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+  }
+
+  .footer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 960px) {
+    .page { padding: 48px 24px 80px; }
+    .masthead { grid-template-columns: 1fr; }
+    .meta { text-align: left; }
+    .intro { grid-template-columns: 1fr; gap: 32px; }
+    .mult-grid { grid-template-columns: 1fr; }
+    .scenarios { grid-template-columns: 1fr; }
+    .questions { grid-template-columns: 1fr; }
+    .roi-grid { grid-template-columns: 1fr; gap: 24px; }
+    .multiples-frame, .scenario-body, .the-gap, .roi-frame { padding: 32px 24px; }
+    .gap-comparison {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      text-align: center;
+    }
+    h1 { font-size: 48px; }
+    .mult-headline, .roi-headline { font-size: 26px; }
+    .scenario-name { font-size: 26px; }
+    .gap-text { font-size: 18px; }
+    .hero-figure { font-size: 100px; }
+    .hero-sub { font-size: 22px; }
+  }
+
+
+  /* ============ DOCUMENT WRAPPER ============ */
+  .document {
+    /* Document is full-width; sections inside handle their own max-width and padding */
+  }
+
+  /* Each block's extracted content needs the same max-width container the original .page provided */
+  .block-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+  }
+
+  /* ============ COVER PAGE ============ */
+  .cover-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 100px 64px 80px;
+    border-bottom: 1px solid var(--line);
+    page-break-after: always;
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .cover-page::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 100% 0%, rgba(255,183,77,0.06), transparent 50%),
+      radial-gradient(ellipse at 0% 100%, rgba(77,208,168,0.05), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .cover-page > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cover-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cover-mark .pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--financial);
+    box-shadow: 0 0 0 4px rgba(255,183,77,0.15);
+  }
+
+  .cover-title-block {
+    margin: 80px 0;
+  }
+
+  .cover-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--financial);
+    margin-bottom: 32px;
+  }
+
+  .cover-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(72px, 10vw, 144px);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin: 0 0 32px;
+    max-width: 1100px;
+  }
+
+  .cover-title em {
+    font-style: italic;
+    color: var(--financial);
+    font-weight: 400;
+  }
+
+  .cover-subtitle {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 2.4vw, 32px);
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--paper-dim);
+    max-width: 800px;
+    letter-spacing: -0.01em;
+  }
+
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .cover-meta-block .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 12px;
+  }
+
+  .cover-meta-block .value {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.3;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+
+  .cover-meta-block .value em {
+    font-style: italic;
+    color: var(--paper-dim);
+    font-size: 14px;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* ============ TABLE OF CONTENTS ============ */
+  .toc-page {
+    padding: 100px 64px 80px;
+    border-bottom: 1px solid var(--line);
+    page-break-after: always;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .toc-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+  }
+
+  .toc-headline {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 64px;
+    font-weight: 400;
+  }
+
+  .toc-headline em {
+    font-style: italic;
+    color: var(--financial);
+  }
+
+  .toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .toc-list li {
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 32px;
+    align-items: baseline;
+    transition: background 0.2s ease;
+  }
+
+  .toc-list li:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .toc-list a {
+    display: contents;
+    color: var(--paper);
+    text-decoration: none;
+  }
+
+  .toc-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+  }
+
+  .toc-block-title {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .toc-block-title em {
+    font-style: italic;
+    color: var(--paper-dim);
+    font-size: 16px;
+    display: block;
+    margin-top: 6px;
+    letter-spacing: 0;
+  }
+
+  .toc-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--financial);
+    letter-spacing: 0.1em;
+  }
+
+  /* ============ EXECUTIVE SUMMARY ============ */
+  .exec-summary {
+    padding: 100px 64px 80px;
+    border-bottom: 1px solid var(--line);
+    page-break-after: always;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,183,77,0.04), transparent 60%);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .exec-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .exec-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--financial);
+  }
+
+  .exec-headline {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(36px, 4.5vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin: 0 0 48px;
+    font-weight: 400;
+    max-width: 1000px;
+  }
+
+  .exec-headline em {
+    font-style: italic;
+    color: var(--financial);
+  }
+
+  .exec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-bottom: 64px;
+  }
+
+  .exec-card {
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 32px 28px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .exec-card:hover {
+    border-color: var(--c);
+    transform: translateY(-2px);
+  }
+
+  .exec-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--c);
+  }
+
+  .exec-card[data-tone="diagnosis"] { --c: var(--ops); }
+  .exec-card[data-tone="cost"]      { --c: var(--warn); }
+  .exec-card[data-tone="answer"]    { --c: var(--good); }
+  .exec-card[data-tone="exit"]      { --c: var(--financial); }
+
+  .exec-card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c);
+    margin-bottom: 16px;
+  }
+
+  .exec-card-figure {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    color: var(--c);
+  }
+
+  .exec-card-figure .currency {
+    font-size: 0.55em;
+    color: var(--paper-dim);
+    font-style: italic;
+    vertical-align: top;
+    margin-right: 0.05em;
+  }
+
+  .exec-card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    color: var(--paper);
+  }
+
+  .exec-card-body {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--paper-dim);
+  }
+
+  .exec-card-body strong { color: var(--paper); font-weight: 500; }
+
+  .exec-recommendation {
+    background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--good);
+    padding: 40px 36px;
+    margin-bottom: 48px;
+  }
+
+  .exec-rec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--good);
+    margin-bottom: 16px;
+  }
+
+  .exec-rec-text {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    font-weight: 400;
+  }
+
+  .exec-rec-text em {
+    color: var(--good);
+    font-style: italic;
+  }
+
+  .exec-rec-sub {
+    margin-top: 16px;
+    color: var(--paper-dim);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 760px;
+  }
+
+  .exec-rec-sub strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ MINI PATHS in EXEC SUMMARY ============ */
+  .exec-paths-mini {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .exec-path-mini {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--line);
+    padding: 18px 16px;
+    transition: border-color 0.25s ease;
+  }
+
+  .exec-path-mini:hover {
+    border-color: var(--good);
+  }
+
+  .exec-path-mini-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 8px;
+  }
+
+  .exec-path-mini-name {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    color: var(--paper);
+  }
+
+  .exec-path-mini-price {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--good);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .exec-path-mini-price .installment {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-style: normal;
+    letter-spacing: 0.05em;
+    color: var(--paper-dim);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .exec-path-mini-desc {
+    font-size: 12px;
+    color: var(--paper-dim);
+    line-height: 1.5;
+  }
+
+  /* ============ SECTION DIVIDER (between blocks) ============ */
+  .block-divider {
+    padding: 80px 64px 56px;
+    border-bottom: 1px solid var(--line);
+    background: var(--ink-2);
+  }
+
+  .block-divider .divider-grid {
+    max-width: 1152px;
+    margin: 0 auto;
+  }
+
+  .divider-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 32px;
+    align-items: baseline;
+  }
+
+  .divider-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--paper-dim);
+    border-top: 2px solid var(--financial);
+    padding-top: 12px;
+  }
+
+  .divider-content {
+    border-top: 2px solid var(--financial);
+    padding-top: 12px;
+  }
+
+  .divider-block-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--financial);
+    margin-bottom: 16px;
+  }
+
+  .divider-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px;
+    font-weight: 400;
+  }
+
+  .divider-title em {
+    font-style: italic;
+    color: var(--financial);
+  }
+
+  .divider-tagline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--paper-dim);
+    line-height: 1.4;
+    max-width: 720px;
+  }
+
+  .divider-marker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    text-align: right;
+    border-top: 2px solid var(--line);
+    padding-top: 12px;
+  }
+
+  /* ============ CLOSING / NEXT STEPS ============ */
+  .closing-page {
+    padding: 100px 64px 80px;
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(77,208,168,0.06), transparent 60%);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .closing-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--good);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .closing-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--good);
+  }
+
+  .closing-headline {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 32px;
+    font-weight: 400;
+    max-width: 900px;
+  }
+
+  .closing-headline em {
+    font-style: italic;
+    color: var(--good);
+  }
+
+  .closing-body {
+    color: var(--paper-dim);
+    font-size: 17px;
+    line-height: 1.6;
+    margin-bottom: 64px;
+    max-width: 760px;
+  }
+
+  .closing-body p { margin: 0 0 16px; }
+  .closing-body strong { color: var(--paper); font-weight: 500; }
+
+  .closing-signature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
+  }
+
+  .sig-block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    margin-bottom: 12px;
+  }
+
+  .sig-block-name {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+
+  .sig-block-detail {
+    font-size: 14px;
+    color: var(--paper-dim);
+    line-height: 1.6;
+  }
+
+  /* ============ DOCUMENT FOOTER ============ */
+  .doc-footer {
+    padding: 32px 64px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .doc-footer strong { color: var(--paper); font-weight: 500; }
+
+  /* ============ BROWSER POLISH ============ */
+  /* Smooth scroll for in-page anchor navigation (TOC links, etc.) */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Sections need a top buffer when scrolled to via anchor — so the divider
+     doesn't sit jammed against the top edge of the viewport. */
+  [id^="block-"], #exec-summary {
+    scroll-margin-top: 24px;
+  }
+
+  /* TOC links should feel clickable in browser */
+  .toc-list a {
+    transition: opacity 0.15s ease;
+  }
+  .toc-list li:hover {
+    background: rgba(255,255,255,0.04);
+  }
+  .toc-list li:hover .toc-marker {
+    color: var(--paper);
+  }
+
+  /* Back-to-top floating button — appears once you've scrolled past the cover */
+  .back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, background 0.15s ease;
+    z-index: 100;
+    pointer-events: none;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .back-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .back-to-top:hover {
+    background: var(--financial);
+    color: var(--ink);
+  }
+
+  /* Hide back-to-top in print */
+  @media print {
+    .back-to-top { display: none; }
+  }
+
+  /* ============ PAGE-BREAK CONTROL ============ */
+  /* Strategy: protect ONLY small atomic units (cards within grids).
+     Anything that takes up half a page or more is allowed to break naturally.
+     Forcing tall blocks to stay together creates large whitespace gaps that
+     look worse than a clean break inside the block.
+
+     Components protected (small enough to always fit in remaining space):
+     - .bleed (bleed cards in Block B's "four moments" section)
+     - .truth (truth cards in Block A's five-truths bar)
+     - .system (system cards in Block A's eleven-system grid)
+     - .non-negotiable (the three cards in Block C)
+     - .gap-comp, .scenario, .question-card (small frames in Block E)
+     - .exec-card (the four cards in the executive summary)
+
+     Components NOT protected (let them flow naturally):
+     - .path (path cards — ~half page tall)
+     - .case-study, .math-frame, .roi-frame, .acq-frame (tall structured blocks)
+     - .recommendation (Diverted River anchor)
+     - .hero-number (the daily-reality narrative — too tall to keep whole)
+     - .block-divider (let dividers flow with content above and below)
+  */
+  .bleed,
+  .truth,
+  .system,
+  .non-negotiable,
+  .gap-comp,
+  .scenario,
+  .question-card,
+  .exec-card,
+  .next-step,
+  .timeline,
+  .acquisition,
+  .roi-frame,
+  .recommendation,
+  .case-study {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ============ PRINT / PDF ============ */
+  @media print {
+    body { background: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding: 60px 48px !important; }
+    .cover-page, .toc-page, .exec-summary { page-break-after: always; }
+    a { color: inherit; text-decoration: none; }
+  }
+
+  /* ============ RESPONSIVE OVERRIDES ============ */
+  @media (max-width: 960px) {
+    .cover-page, .toc-page, .exec-summary, .block-divider, .closing-page { padding: 60px 24px; }
+    .block-content { padding: 48px 24px 80px; }
+    .cover-meta { grid-template-columns: 1fr; gap: 24px; }
+    .toc-list li { grid-template-columns: 50px 1fr; }
+    .toc-marker { display: none; }
+    .exec-grid { grid-template-columns: 1fr; gap: 16px; }
+    .exec-paths-mini { grid-template-columns: 1fr; gap: 8px; }
+    .divider-grid { grid-template-columns: 1fr; gap: 12px; }
+    .divider-num, .divider-marker { border-top: none; padding-top: 0; }
+    .closing-signature { grid-template-columns: 1fr; gap: 24px; }
+    .doc-footer { padding: 24px; grid-template-columns: 1fr; }
+  }
+
+</style>
+</head>
+<body>
+<div class="document">
+
+  <!-- ============ COVER PAGE ============ -->
+  <section class="cover-page">
+    <div class="cover-mark">
+      <span class="pulse"></span>
+      Blueprint AI &nbsp;/&nbsp; Operating Diagnosis
+    </div>
+
+    <div class="cover-title-block">
+      <div class="cover-eyebrow">The Star Lanes Blueprint</div>
+      <h1 class="cover-title">Eleven systems running <em>four businesses</em> under one roof.</h1>
+      <p class="cover-subtitle">A diagnostic of why your operating system is costing you time, money, and exit value &mdash; and what it takes to fix it.</p>
+    </div>
+
+    <div class="cover-meta">
+      <div class="cover-meta-block">
+        <div class="label">Prepared for</div>
+        <div class="value">Doug Mechling<em>Owner, Star Lanes Polaris</em></div>
+      </div>
+      <div class="cover-meta-block">
+        <div class="label">Prepared by</div>
+        <div class="value">Justin Leffew<em>Founder, Blueprint AI</em></div>
+      </div>
+      <div class="cover-meta-block">
+        <div class="label">Date</div>
+        <div class="value">April 2026<em>blueprintai.cc &middot; Columbus, OH</em></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ TABLE OF CONTENTS ============ -->
+  <section class="toc-page">
+    <div class="toc-eyebrow">Contents</div>
+    <h2 class="toc-headline">Five blocks. <em>One arc.</em></h2>
+
+    <ul class="toc-list">
+      <li><a href="#exec-summary">
+        <div class="toc-num">&sect; 00</div>
+        <div class="toc-block-title">Executive Summary<em>What I found, what it costs, what I recommend.</em></div>
+        <div class="toc-marker">START &rarr;</div>
+      </a></li>
+      <li><a href="#block-a">
+        <div class="toc-num">&sect; A</div>
+        <div class="toc-block-title">The Systems Map<em>Why eleven systems can&rsquo;t agree on what&rsquo;s happening in one venue.</em></div>
+        <div class="toc-marker">DIAGNOSIS</div>
+      </a></li>
+      <li><a href="#block-b">
+        <div class="toc-num">&sect; B</div>
+        <div class="toc-block-title">The Reconciliation Tax<em>What it costs you, this year and next.</em></div>
+        <div class="toc-marker">COST</div>
+      </a></li>
+      <li><a href="#block-c">
+        <div class="toc-num">&sect; C</div>
+        <div class="toc-block-title">The Operating Layer<em>The shape of the fix.</em></div>
+        <div class="toc-marker">ANSWER</div>
+      </a></li>
+      <li><a href="#block-d">
+        <div class="toc-num">&sect; D</div>
+        <div class="toc-block-title">Two Paths Forward<em>Pick the one that matches where Star Lanes actually is.</em></div>
+        <div class="toc-marker">CHOICE</div>
+      </a></li>
+      <li><a href="#block-e">
+        <div class="toc-num">&sect; E</div>
+        <div class="toc-block-title">The Exit Math<em>$49,900 to protect a $3.6M swing.</em></div>
+        <div class="toc-marker">UPSIDE</div>
+      </a></li>
+    </ul>
+  </section>
+
+
+  <!-- ============ EXECUTIVE SUMMARY ============ -->
+  <section class="exec-summary" id="exec-summary">
+    <div class="exec-eyebrow">
+      <span class="dot"></span>
+      Executive Summary &nbsp;/&nbsp; Read This First
+    </div>
+    <h2 class="exec-headline">The right product for Star Lanes <em>doesn&rsquo;t exist on the market.</em> That&rsquo;s not your fault &mdash; and it&rsquo;s the opportunity.</h2>
+
+    <div class="exec-grid">
+      <div class="exec-card" data-tone="diagnosis">
+        <div class="exec-card-label">The Diagnosis</div>
+        <div class="exec-card-figure">11</div>
+        <div class="exec-card-title">Disconnected systems claiming five different versions of the truth.</div>
+        <div class="exec-card-body">Square, Triple Seat, Embed, Conqueror, Rex, 501 Fund, and the rest each own a piece of the business but <strong>none of them agree on the same customer, the same revenue, or the same event</strong>. The full map is in Block A.</div>
+      </div>
+
+      <div class="exec-card" data-tone="cost">
+        <div class="exec-card-label">The Daily Tax</div>
+        <div class="exec-card-figure" style="font-size: 36px; line-height: 1.1; letter-spacing: -0.02em;">15+ min</div>
+        <div class="exec-card-title">Every morning starts with cross-checking five systems before answering one basic question.</div>
+        <div class="exec-card-body">Open Square. Open Triple Seat. Pull Conqueror. Pull Embed. Cross-reference the spreadsheet your sister-in-law sent. By 9am you&rsquo;re tired before the day starts. <strong>The dollar receipt &mdash; about $85,800/yr in your time and hers, at two units &mdash; is in Block B. But the time is what you actually feel.</strong></div>
+      </div>
+
+      <div class="exec-card" data-tone="answer">
+        <div class="exec-card-label">The Fix</div>
+        <div class="exec-card-figure">1</div>
+        <div class="exec-card-title">Read-only operating layer above your existing systems.</div>
+        <div class="exec-card-body">Don&rsquo;t replace Square. Don&rsquo;t replace Triple Seat. <strong>Build a thin layer that listens, normalizes, and reports</strong> &mdash; one customer record, one revenue ledger, one source of truth. <strong>One screen at 8am that&rsquo;s already done the cross-checking for you.</strong> Architecture in Block C, two paths in Block D.</div>
+      </div>
+
+      <div class="exec-card" data-tone="exit">
+        <div class="exec-card-label">The Real Number</div>
+        <div class="exec-card-figure"><span class="currency">$</span>3.6M</div>
+        <div class="exec-card-title">Valuation swing at the closing table when you sell at three units.</div>
+        <div class="exec-card-body">A one-turn multiple swing on $3.6M of EBITDA. Clean books and a transferable operating system get you 5&times;. Dirty books get you 4&times;. <strong>The full math, including industry comps and what buyers actually look for, is in Block E.</strong></div>
+      </div>
+    </div>
+
+    <div class="exec-recommendation">
+      <div class="exec-rec-label">Two paths</div>
+      <div class="exec-rec-text">Two real options for how much of the operating system to fix right now &mdash; <em>priced against a real alternative.</em></div>
+      <div class="exec-paths-mini" style="grid-template-columns: 1fr 1fr;">
+        <div class="exec-path-mini">
+          <div class="exec-path-mini-tag">Path 01 &middot; Single-Store</div>
+          <div class="exec-path-mini-name">The Fix</div>
+          <div class="exec-path-mini-desc" style="margin-top: 8px;">Polaris running clean in 6&ndash;8 weeks. Every moment in Block B addressed.</div>
+        </div>
+        <div class="exec-path-mini">
+          <div class="exec-path-mini-tag">Path 02 &middot; Two-Store</div>
+          <div class="exec-path-mini-name">The Endgame</div>
+          <div class="exec-path-mini-desc" style="margin-top: 8px;">Built for OSU from day one. The operating system that earns the multiple at exit.</div>
+        </div>
+      </div>
+      <p class="exec-rec-sub" style="margin-top: 20px;"><strong>Pricing, scope, timeline, and the side-by-side comparison against the Diverted River alternative are in Block D.</strong> Read the diagnosis first. The dollar conversation comes after the work is understood.</p>
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.7; color: var(--paper-dim); max-width: 800px; font-style: italic;">
+      Everything below this page is the work behind these four numbers &mdash; the diagnosis, the cost math, the architecture, and the industry data on multiples and exit valuations. Read what you want, in any order. <strong style="color: var(--paper); font-style: normal;">If you only have ten minutes, this page is the one that matters.</strong>
+    </p>
+  </section>
+
+
+  <!-- ============ DIVIDER: BLOCK A ============ -->
+  <section class="block-divider" id="block-a">
+    <div class="divider-grid">
+      <div class="divider-num">&sect; A</div>
+      <div class="divider-content">
+        <div class="divider-block-num">Block A of E</div>
+        <h2 class="divider-title">The Systems <em>Map</em></h2>
+        <p class="divider-tagline">Why eleven systems can't agree on what's happening in one venue.</p>
+      </div>
+      <div class="divider-marker">DIAGNOSIS</div>
+    </div>
+  </section>
+
+<div class="block-content"><!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="intro-lead">
+      Star Lanes is not <span class="accent">one business</span> running on one system. It's <span class="accent">four businesses</span> — bowling, arcade, food &amp; bar, and events — running on eleven systems that don't talk to each other.
+    </div>
+    <div class="intro-body">
+      <p>This page maps every system Star Lanes uses today, what each one is responsible for, and where two or more systems claim ownership of the same fact about your business.</p>
+      <p>Every system on this page is good at its job individually. <strong>The problem isn't any one tool. The problem is the gap between them</strong> — and that gap is where your sister-in-law's nights, your reconciliation tax, and your loyalty program are getting eaten.</p>
+      <p>Read this as a diagnosis, not a sales deck. If anything below is wrong, tell me — I'd rather get it right than get it pretty.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 1: FIVE TRUTHS ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 01</div>
+    <div>
+      <h2 class="section-title">Five truths your business needs to know</h2>
+      <p class="section-sub">Every operating decision you make depends on knowing one of these five things. Right now, no single system can answer all five — and several of them disagree.</p>
+    </div>
+  </div>
+
+  <div class="truths">
+    <div class="truth" style="--c: var(--financial);">
+      <div class="truth-label">Truth 01</div>
+      <div class="truth-name">Financial</div>
+      <div class="truth-q">What actually counted as revenue today, this week, this month?</div>
+    </div>
+    <div class="truth" style="--c: var(--customer);">
+      <div class="truth-label">Truth 02</div>
+      <div class="truth-name">Customer</div>
+      <div class="truth-q">Who walked in, what did they spend, and is it worth getting them back?</div>
+    </div>
+    <div class="truth" style="--c: var(--event);">
+      <div class="truth-label">Truth 03</div>
+      <div class="truth-name">Event</div>
+      <div class="truth-q">What was sold, what was consumed, what's still owed?</div>
+    </div>
+    <div class="truth" style="--c: var(--ops);">
+      <div class="truth-label">Truth 04</div>
+      <div class="truth-name">Operational</div>
+      <div class="truth-q">What's booked, what's available, what's the team scheduled to do?</div>
+    </div>
+    <div class="truth" style="--c: var(--marketing);">
+      <div class="truth-label">Truth 05</div>
+      <div class="truth-name">Marketing</div>
+      <div class="truth-q">Where did the lead come from, and which channels are actually paying off?</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2: SYSTEM INVENTORY ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 02</div>
+    <div>
+      <h2 class="section-title">The eleven systems</h2>
+      <p class="section-sub">Each card shows what the system owns and which of the five truths it touches. Red dots mark systems where ownership overlaps with another system in a way that creates the reconciliation tax I'll quantify in the next section.</p>
+    </div>
+  </div>
+
+  <div class="systems-grid">
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Square</div>
+        <div class="system-tag">POS · Card</div>
+      </div>
+      <div class="system-role">Food &amp; beverage point of sale, card processing, future loyalty engine.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="financial">Financial</span>
+        <span class="pill" data-truth="customer">Customer</span>
+      </div>
+      <div class="system-broken" title="Conflicts with other systems"></div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Embed</div>
+        <div class="system-tag">Game Cards</div>
+      </div>
+      <div class="system-role">Arcade game card sales, kiosk transactions, redemption tracking.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="financial">Financial</span>
+        <span class="pill" data-truth="customer">Customer</span>
+      </div>
+      <div class="system-broken" title="Conflicts with other systems"></div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Conqueror</div>
+        <div class="system-tag">Bowling POS</div>
+      </div>
+      <div class="system-role">Bowling lane management, scoring, lane-side ordering, time tracking.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="financial">Financial</span>
+        <span class="pill" data-truth="ops">Operational</span>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">501 Fund</div>
+        <div class="system-tag">Darts</div>
+      </div>
+      <div class="system-role">Electronic dart board scoring and per-station billing on its own tablet.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="financial">Financial</span>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Omni Arena</div>
+        <div class="system-tag">VR</div>
+      </div>
+      <div class="system-role">Free-roam VR attraction. Standalone — no integration with the rest of the venue.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="financial">Financial</span>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Triple Seat</div>
+        <div class="system-tag">Event CRM</div>
+      </div>
+      <div class="system-role">Event sales pipeline, BEOs, deposits, lane-as-inventory holds.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="event">Event</span>
+        <span class="pill" data-truth="ops">Operational</span>
+        <span class="pill" data-truth="customer">Customer</span>
+      </div>
+      <div class="system-broken" title="Conflicts with other systems"></div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Rex</div>
+        <div class="system-tag">Online Booking</div>
+      </div>
+      <div class="system-role">Public-facing lane reservation. Pulls availability from Triple Seat via API.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="ops">Operational</span>
+        <span class="pill" data-truth="customer">Customer</span>
+      </div>
+      <div class="system-broken" title="Conflicts with other systems"></div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Compeat → R365</div>
+        <div class="system-tag">Accounting</div>
+      </div>
+      <div class="system-role">Books of record. Compeat is being retired; R365 is the migration target.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="financial">Financial</span>
+      </div>
+      <div class="system-broken" title="Conflicts with other systems"></div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Hot Schedules</div>
+        <div class="system-tag">Staff</div>
+      </div>
+      <div class="system-role">Today's scheduler and staff messaging — being retired this year.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="ops">Operational</span>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">New HR / Sched</div>
+        <div class="system-tag">Replacement</div>
+      </div>
+      <div class="system-role">Replacing Hot Schedules. Will need to connect to payroll and Square.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="ops">Operational</span>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Go High Level</div>
+        <div class="system-tag">Marketing</div>
+      </div>
+      <div class="system-role">Review responses, agency-built chatbot, marketing automation.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="marketing">Marketing</span>
+        <span class="pill" data-truth="customer">Customer</span>
+      </div>
+    </div>
+
+    <div class="system">
+      <div class="system-header">
+        <div class="system-name">Eventective</div>
+        <div class="system-tag">Lead Source</div>
+      </div>
+      <div class="system-role">Inbound corporate-event lead generation directory.</div>
+      <div class="truth-pills">
+        <span class="pill" data-truth="marketing">Marketing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3: COLLISION CASE STUDY ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 03</div>
+    <div>
+      <h2 class="section-title">Why this matters: one customer, four answers</h2>
+      <p class="section-sub">The systems map looks busy on paper. The real cost shows up when you watch what happens to a single customer interaction. Here's a normal Friday night at Star Lanes.</p>
+    </div>
+  </div>
+
+  <div class="collision-frame">
+    <div class="scenario">
+      <span class="quote-mark">"</span>A customer walks in, buys two beers at the bar, drops $40 on a game card, bowls a lane for an hour, and books a corporate event for next month with a $1,000 deposit.<span class="quote-mark">"</span>
+    </div>
+    <div class="scenario-sub">/ ONE GUEST · ONE NIGHT · FOUR SYSTEMS · FOUR DIFFERENT TRUTHS</div>
+
+    <div class="collision-rows">
+      <div class="collision-row header">
+        <div>System</div>
+        <div>What it records</div>
+        <div>Truth claimed</div>
+        <div>Status</div>
+      </div>
+
+      <div class="collision-row">
+        <div class="col-system">Square</div>
+        <div class="col-says">Records the two beers as $18 in F&amp;B revenue. Records the $1,000 event deposit as <em>realized revenue</em> the day it's collected.</div>
+        <div class="col-truth truth-financial">Financial</div>
+        <div class="col-status status-wrong">Half wrong</div>
+      </div>
+
+      <div class="collision-row">
+        <div class="col-system">Embed</div>
+        <div class="col-says">Records the $40 game card sale as a separate transaction. No connection to the Square customer record from the same night.</div>
+        <div class="col-truth truth-customer">Customer</div>
+        <div class="col-status status-blind">Blind</div>
+      </div>
+
+      <div class="collision-row">
+        <div class="col-system">Conqueror</div>
+        <div class="col-says">Records the lane time as bowling revenue in its own system. No tie to the bar tab or game card from the same guest.</div>
+        <div class="col-truth truth-financial">Financial</div>
+        <div class="col-status status-blind">Blind</div>
+      </div>
+
+      <div class="collision-row">
+        <div class="col-system">Triple Seat</div>
+        <div class="col-says">Records the event booking and the $1,000 deposit as a future-dated liability, which is the correct accounting.</div>
+        <div class="col-truth truth-event">Event</div>
+        <div class="col-status status-correct">Correct</div>
+      </div>
+
+      <div class="collision-row">
+        <div class="col-system">Compeat / R365</div>
+        <div class="col-says">Inherits whatever Square sent. Sister-in-law has to manually back the $1,000 out of revenue and reclassify it as deferred.</div>
+        <div class="col-truth truth-financial">Financial</div>
+        <div class="col-status status-wrong">Manual fix needed</div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <div>
+        <div class="verdict-label">The customer side</div>
+        <div class="verdict-text">Four systems just saw the same person spend <span class="accent-good">$108 plus a $1,000 deposit</span> — and not one of them has a unified record of who that customer is.</div>
+      </div>
+      <div>
+        <div class="verdict-label">The accounting side</div>
+        <div class="verdict-text">The books say revenue was <span class="accent">$1,000 higher</span> than it actually was, until someone reverses it by hand at month-end.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: WHAT'S BREAKING ============ -->
+  <div class="section-header" style="margin-top: 96px;">
+    <div class="section-num">§ 04</div>
+    <div>
+      <h2 class="section-title">What this is costing you</h2>
+      <p class="section-sub">Three specific bleeds, ranked by dollar value at scale. The full ROI math is in Block B; these are the headline numbers.</p>
+    </div>
+  </div>
+
+  <div class="breaks">
+    <div class="break">
+      <div class="break-num">BLEED · 01</div>
+      <div class="break-title">The reconciliation tax</div>
+      <div class="break-body">Your sister-in-law spends roughly five hours every week reconciling Square gross-vs-net, event deposits booked as revenue, and beverage-package consumption that has no native inventory comp button. Multiply by two locations once OSU opens.</div>
+      <div class="break-cost">→ ~$20K/year at two units</div>
+    </div>
+
+    <div class="break">
+      <div class="break-num">BLEED · 02</div>
+      <div class="break-title">The loyalty program you can't launch</div>
+      <div class="break-body">Square Loyalty only sees Square spend. A guest who drops $200 on game cards, $80 on a bowling lane, and $40 at the bar registers as a $40 customer. The program will train your best customers around an incomplete view of their own value.</div>
+      <div class="break-cost">→ Repeat-visit revenue, unmeasurable</div>
+    </div>
+
+    <div class="break">
+      <div class="break-num">BLEED · 03</div>
+      <div class="break-title">The unit-two multiplier</div>
+      <div class="break-body">If unit one is messy, unit two isn't 2× messy — it's 4×. Cross-location loyalty, gift card liability, manager differences, local marketing attribution. And the reporting a future buyer wants to see at three units doesn't exist if the data is dirty at one.</div>
+      <div class="break-cost">→ Acquisition-readiness risk</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 5: THE ARCHITECTURE ANSWER ============ -->
+  <div class="architecture">
+    <div class="arch-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 24px;">
+          <span class="dot" style="background: var(--customer);"></span>
+          The shape of the fix
+        </div>
+        <h2 class="arch-headline">You don't need to <em>replace</em> any of these systems. You need a thin layer <em>above</em> them.</h2>
+      </div>
+      <div class="arch-body">
+        <p>Square is good at being Square. Triple Seat is good at being Triple Seat. The fix isn't another vendor trying to do all of it — that's the same trap you've been in with Diverted River for over a year.</p>
+        <p>The fix is a <strong>read-only operating layer</strong> that pulls from each system, gives every customer one identity, classifies every transaction the way your accountant actually books it, and produces one daily picture of the business that all eleven systems can agree on.</p>
+        <p>It starts read-only — meaning <strong>nothing in your production stack changes</strong> until I'm sure the layer is right. Then I connect it to R365, then to your loyalty program, then to OSU when it opens.</p>
+        <p style="color: var(--paper);"><strong>This is what Block C, D, and E will lay out.</strong> What's on this page is the diagnosis. The next pages are the prescription.</p>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ============ DIVIDER: BLOCK B ============ -->
+  <section class="block-divider" id="block-b">
+    <div class="divider-grid">
+      <div class="divider-num">&sect; B</div>
+      <div class="divider-content">
+        <div class="divider-block-num">Block B of E</div>
+        <h2 class="divider-title">The Reconciliation <em>Tax</em></h2>
+        <p class="divider-tagline">What it costs you, this year and next.</p>
+      </div>
+      <div class="divider-marker">COST</div>
+    </div>
+  </section>
+
+<div class="block-content"><!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="intro-lead">
+      Block A showed why eleven systems collide. <span class="accent">This page is what that costs you</span> — not in dollars first. In the shape of every single morning.
+    </div>
+    <div class="intro-body">
+      <p>Every time two systems disagree about the same fact, somebody has to fix it by hand. That somebody is mostly you and your sister-in-law. The fix gets copied into a journal entry, a spreadsheet, an email — and the time it takes is invisible because it's already baked into how things have always run.</p>
+      <p>The dollars matter. They're at the bottom of this page. <strong>But the dollars aren't the thing you actually feel.</strong> What you feel is that you can't open one tab in the morning and know what happened. That's the bleed worth fixing first.</p>
+      <p>Every figure on this page is an estimate. The methodology is shown. Push back on any input and the math redoes itself.</p>
+    </div>
+  </section>
+
+  <!-- ============ HERO — DAILY REALITY ============ -->
+  <section class="hero-number" style="text-align: left; padding: 64px 0 80px;">
+    <div class="hero-label">/ EVERY MORNING AT POLARIS</div>
+    <div style="font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(40px, 5.5vw, 72px); line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 32px; max-width: 1100px;">
+      <span style="color: var(--paper-dim);">Open Square. Check yesterday's gross.</span>
+      <span style="color: var(--paper-dim);">Open Triple Seat to see which events ran.</span>
+      <span style="color: var(--paper-dim);">Pull Conqueror for bowling. Pull Embed for arcade.</span>
+      <span style="color: var(--paper-dim);">Open the spreadsheet your sister-in-law sent.</span>
+      <span style="color: var(--paper);">Realize the deposit numbers don't match.</span>
+      <span style="color: var(--paper-dim);">Slack Erin about the Hilton package.</span>
+      <span style="color: var(--financial); font-style: italic;">By 9am you're tired before the day starts.</span>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); max-width: 900px;">
+      <div style="background: var(--ink-2); padding: 20px 24px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper-dim); margin-bottom: 10px;">Time, every morning</div>
+        <div style="font-family: 'Fraunces', serif; font-size: 36px; font-weight: 400; letter-spacing: -0.02em; color: var(--paper);">15+ min</div>
+        <div style="font-size: 13px; color: var(--paper-dim); margin-top: 4px;">before you can answer one basic question</div>
+      </div>
+      <div style="background: var(--ink-2); padding: 20px 24px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper-dim); margin-bottom: 10px;">Days a year</div>
+        <div style="font-family: 'Fraunces', serif; font-size: 36px; font-weight: 400; letter-spacing: -0.02em; color: var(--paper);">365</div>
+        <div style="font-size: 13px; color: var(--paper-dim); margin-top: 4px;">of the same loop, every single one</div>
+      </div>
+      <div style="background: var(--ink-2); padding: 20px 24px;">
+        <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper-dim); margin-bottom: 10px;">Time it gets you</div>
+        <div style="font-family: 'Fraunces', serif; font-size: 36px; font-weight: 400; letter-spacing: -0.02em; color: var(--financial); font-style: italic;">closer to running the venue</div>
+      </div>
+    </div>
+
+    <p style="margin-top: 36px; font-family: 'Fraunces', serif; font-style: italic; font-size: 22px; line-height: 1.4; color: var(--paper); max-width: 800px;">
+      The biggest fix isn't the money. It's <span style="color: var(--financial);">one screen at 8am that's already done the cross-checking for you.</span> One screen at 10pm that tells you how the night actually went. The dollars at the bottom of this page are the receipt — not the headline.
+    </p>
+  </section>
+
+  <!-- ============ SECTION 1: FOUR BLEEDS ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 01</div>
+    <div>
+      <h2 class="section-title">The four moments your day breaks</h2>
+      <p class="section-sub">Each of these is a specific place where the systems force a human to step in — every week, sometimes every day. The dollars come at the end of the page. The friction is what you actually feel.</p>
+    </div>
+  </div>
+
+  <div class="bleeds">
+
+    <!-- BLEED 1 -->
+    <div class="bleed">
+      <div class="bleed-num">BLEED · 01</div>
+      <div class="bleed-content">
+        <h3>Event deposits booked as revenue</h3>
+        <p>When a corporate group puts down $1,000 to hold a date, Square logs it as $1,000 in sales the day the card runs. Your books say it's a liability until the event happens.</p>
+        <p>Every deposit gets manually backed out at month-end and reclassified as deferred revenue. With ~30+ events per month, that's 30+ journal entries that should be one automated rule.</p>
+        <div class="bleed-quote">"Square actually processes that transaction but they count it as sales for us. We hold it as a liability. Square doesn't recognize that."</div>
+      </div>
+      <div class="bleed-cost">
+        <div class="bleed-cost-label">Time cost</div>
+        <div class="bleed-cost-figure">~2 hrs</div>
+        <div class="bleed-cost-unit">per week, per location</div>
+      </div>
+    </div>
+
+    <!-- BLEED 2 -->
+    <div class="bleed">
+      <div class="bleed-num">BLEED · 02</div>
+      <div class="bleed-content">
+        <h3>Beverage packages with no inventory comp</h3>
+        <p>When a corporate group prepays for an unlimited premium bar package, the bartender still has to ring every drink so liquor inventory stays accurate. Those rings inflate revenue a second time.</p>
+        <p>Micros had a one-button "inventory comp" that handled this cleanly. Square doesn't. So every event with a beverage package needs a manual reversal — and the bigger the event, the bigger the cleanup.</p>
+        <div class="bleed-quote">"On Micros we literally had a button. There's no way to do it in Square. So we're running this and my gross sales — it doesn't know, and I don't know."</div>
+      </div>
+      <div class="bleed-cost">
+        <div class="bleed-cost-label">Time cost</div>
+        <div class="bleed-cost-figure">~1.5 hrs</div>
+        <div class="bleed-cost-unit">per week, per location</div>
+      </div>
+    </div>
+
+    <!-- BLEED 3 -->
+    <div class="bleed">
+      <div class="bleed-num">BLEED · 03</div>
+      <div class="bleed-content">
+        <h3>Cross-system sales reconciliation</h3>
+        <p>Square reports gross. The books need net. Embed sells game cards as one transaction; the redemption inside the venue is another. Triple Seat tracks event packages on its own ledger. Each one is locally correct and globally incomplete.</p>
+        <p>Every week, somebody pulls four reports, lines up the numbers, and figures out which is the real one. That's not a spreadsheet job — that's interpretive work that has to happen before anything closes.</p>
+        <div class="bleed-quote">"We're constantly creating workarounds. We're adding numbers and subtracting numbers. It's almost archaic."</div>
+      </div>
+      <div class="bleed-cost">
+        <div class="bleed-cost-label">Time cost</div>
+        <div class="bleed-cost-figure">~1 hr</div>
+        <div class="bleed-cost-unit">per week, per location</div>
+      </div>
+    </div>
+
+    <!-- BLEED 4 -->
+    <div class="bleed">
+      <div class="bleed-num">BLEED · 04</div>
+      <div class="bleed-content">
+        <h3>Triple Seat → Square → R365 mapping fixes</h3>
+        <p>R365 inherits whatever Square sends it. If Square's categories are messy — and event packages, venue rentals, and bundled F&amp;B make them messy — the mess gets copied straight into the books of record.</p>
+        <p>Mapping corrections get made on the R365 side, not the source side. Same fix, every period. The migration from Compeat to R365 is a chance to fix this once — or to inherit the workaround forever.</p>
+        <div class="bleed-quote">"There's a tremendous amount of work to get to the point where we actually can have it set properly, and Square is limited on the events side."</div>
+      </div>
+      <div class="bleed-cost">
+        <div class="bleed-cost-label">Time cost</div>
+        <div class="bleed-cost-figure">~0.5 hr</div>
+        <div class="bleed-cost-unit">per week, per location</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ SECTION 2: THE MATH ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 02</div>
+    <div>
+      <h2 class="section-title">And the dollar receipt</h2>
+      <p class="section-sub">Add up the four moments, multiply by the year, and there's a number attached to it. It's not the headline — but it's what the daily friction actually adds up to in cash.</p>
+    </div>
+  </div>
+
+  <div class="math-frame">
+    <div class="math-intro">
+      Two people are doing this work. Your sister-in-law spends roughly five hours a week on the journal entries and reconciliation cycles. <strong>You spend another five hours a week</strong> on the morning cross-checking from the top of this page — the part that doesn't show up on a payroll line because it's just &ldquo;owner time.&rdquo; Both have a real cost.
+    </div>
+
+    <table class="math-table">
+      <thead>
+        <tr>
+          <th>Input</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label" colspan="2" style="background: rgba(255,255,255,0.02); font-style: italic; color: var(--paper-dim); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Accountant time (sister-in-law)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Weekly reconciliation hours, per location</td>
+          <td class="row-value">5.0 hrs</td>
+        </tr>
+        <tr>
+          <td class="row-label">Loaded hourly cost</td>
+          <td class="row-value">$40.00 / hr</td>
+        </tr>
+        <tr>
+          <td class="row-label">Annual cost, two locations</td>
+          <td class="row-value">$20,800</td>
+        </tr>
+
+        <tr>
+          <td class="row-label" colspan="2" style="background: rgba(255,255,255,0.02); font-style: italic; color: var(--paper-dim); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; padding-top: 18px;">Owner time (you)</td>
+        </tr>
+        <tr>
+          <td class="row-label">Weekly cross-checking hours</td>
+          <td class="row-value">5.0 hrs</td>
+        </tr>
+        <tr>
+          <td class="row-label">Opportunity cost of owner time</td>
+          <td class="row-value">$250.00 / hr</td>
+        </tr>
+        <tr>
+          <td class="row-label">Annual cost</td>
+          <td class="row-value">$65,000</td>
+        </tr>
+
+        <tr class="row-total">
+          <td class="row-label">Total annual labor cost — two units</td>
+          <td class="row-value">$85,800</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="math-assumptions">
+      <div class="assumption">
+        <div class="assumption-label">Assumption / Accountant hours</div>
+        Five hours weekly is the conservative read of what you described in our walkthrough — bigger event weeks run longer.
+      </div>
+      <div class="assumption">
+        <div class="assumption-label">Assumption / Accountant rate</div>
+        $40/hr fully loaded is a reasonable estimate for an internal bookkeeping role with benefits in Columbus.
+      </div>
+      <div class="assumption">
+        <div class="assumption-label">Assumption / Owner rate</div>
+        $250/hr is what your time is worth to a 13-year-old, $5M+ business with a three-unit endgame. Lower if you'd rather see a CEO comp benchmark, higher if you account for what the work prevents you from doing instead.
+      </div>
+      <div class="assumption">
+        <div class="assumption-label">Assumption / Scaling</div>
+        Unit two adds the same five-hour weekly burden, not less — separate POS instances, separate event books, separate reconciliations.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3: TIMELINE ============ -->
+  <div class="timeline">
+    <h2 class="timeline-headline">The bleed compounds. <em>It doesn't stay flat.</em></h2>
+    <p class="timeline-sub">Reconciliation work scales with system count, not headcount. As Star Lanes adds locations and adds tools, the manual fix-it work grows faster than revenue does.</p>
+
+    <div class="timeline-grid">
+      <div class="timeline-cell">
+        <div class="timeline-period">Today / 1 location</div>
+        <div class="timeline-figure timeline-figure-1">$10,400</div>
+        <div class="timeline-context">Per year. Polaris alone, current systems, current event volume.</div>
+      </div>
+      <div class="timeline-cell">
+        <div class="timeline-period">OSU opens / 2 locations</div>
+        <div class="timeline-figure timeline-figure-2">$20,800</div>
+        <div class="timeline-context">Per year. Two locations, doubled work, no consolidated reporting yet.</div>
+      </div>
+      <div class="timeline-cell">
+        <div class="timeline-period">Year 3 / 2 locations</div>
+        <div class="timeline-figure timeline-figure-3">$25,000+</div>
+        <div class="timeline-context">Loyalty + cross-location gift cards + R365 reporting drift add complexity.</div>
+      </div>
+      <div class="timeline-cell">
+        <div class="timeline-period">3 locations / Acquisition</div>
+        <div class="timeline-figure timeline-figure-4">Valuation hit</div>
+        <div class="timeline-context">A buyer paying a multiple <strong>discounts dirty financials, not just labor cost.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: THE ACQUISITION FRAME ============ -->
+  <div class="acquisition">
+    <div class="acq-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 24px;">
+          <span class="dot" style="background: var(--financial);"></span>
+          The number behind the number
+        </div>
+        <h2 class="acq-headline">The $85,800 is the <em>visible</em> cost. The bigger one shows up at the closing table.</h2>
+      </div>
+      <div class="acq-body">
+        <p>You said the long-term play is three units, then sale. Buyers paying multiples on multi-unit hospitality don't just buy the venue. They buy the <strong>operating system</strong> — clean unit economics, repeatable financials, reporting they can audit, customer data they can own.</p>
+        <p>If the data is dirty when they show up, the multiple comes down. Not because of the labor cost — that's noise. Because every line item with a manual workaround is a question mark in diligence, and question marks discount valuations.</p>
+        <p><strong>This is the real ROI of fixing the layer now.</strong> The $85,800/year of labor pays for the work in under a year. The exit math is what makes it the most important project on the calendar.</p>
+        <div class="acq-quote">"Three units is what gets me acquirable."</div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ============ DIVIDER: BLOCK C ============ -->
+  <section class="block-divider" id="block-c">
+    <div class="divider-grid">
+      <div class="divider-num">&sect; C</div>
+      <div class="divider-content">
+        <div class="divider-block-num">Block C of E</div>
+        <h2 class="divider-title">The Operating <em>Layer</em></h2>
+        <p class="divider-tagline">The shape of the fix.</p>
+      </div>
+      <div class="divider-marker">ANSWER</div>
+    </div>
+  </section>
+
+<div class="block-content"><!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="intro-lead">
+      Block A showed why the systems collide. Block B put a number on it. <span class="accent">This is what the fix actually looks like</span> — and what it isn't.
+    </div>
+    <div class="intro-body">
+      <p>The instinct, when systems don't talk, is to find the one super-tool that does everything. You've been running that search for over a year — Diverted River, vendor demos, every booth at IAAPA. Nobody has shown up with the answer because <strong>the answer isn't a new system. It's a thin layer above the systems you already trust.</strong></p>
+      <p>This block describes that layer in plain language — what it is, what it pulls from, what it produces, and what it deliberately is not.</p>
+      <p>Read this with a pen. If anything looks wrong or missing, mark it. The architecture has to be right before the implementation options on the next page mean anything.</p>
+    </div>
+  </section>
+
+  <!-- ============ THE PRINCIPLE ============ -->
+  <div class="principle">
+    <div class="principle-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 24px;">
+          <span class="dot"></span>
+          The principle
+        </div>
+        <h2 class="principle-headline">Don't replace your systems. Build a layer that <em>makes them agree.</em></h2>
+      </div>
+      <div class="principle-body">
+        <p>Square is good at being Square. Triple Seat is good at being Triple Seat. Conqueror runs your bowling. Embed runs your arcade. None of these need replacing — they need a shared brain above them that reads from each one, classifies what it reads, and produces a single version of the truth.</p>
+        <p>The layer is <strong>read-only first.</strong> Nothing changes about how your team rings a sale, books an event, or sells a game card on day one. The layer just listens, normalizes, and reports. Once it's right and you trust it, then it starts writing back — into R365, into your loyalty program, into the daily operator digest.</p>
+        <p><strong>That order matters.</strong> Read first, write second. It's how the work earns trust before it touches anything that matters.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 1: THE ARCHITECTURE ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 01</div>
+    <div>
+      <h2 class="section-title">The architecture, drawn out</h2>
+      <p class="section-sub">Three layers. Source systems on top, the operating layer in the middle, the things you actually use on the bottom. The layer in the middle is the work.</p>
+    </div>
+  </div>
+
+  <div class="arch-diagram">
+
+    <!-- TOP LAYER -->
+    <div class="layer-label">Layer 01 / Sources — your existing systems, unchanged</div>
+    <div class="source-systems">
+      <div class="source-pill">
+        <div class="source-name">Square</div>
+        <div class="source-tag">F&amp;B · Card</div>
+      </div>
+      <div class="source-pill">
+        <div class="source-name">Triple Seat</div>
+        <div class="source-tag">Events</div>
+      </div>
+      <div class="source-pill">
+        <div class="source-name">Embed</div>
+        <div class="source-tag">Arcade</div>
+      </div>
+      <div class="source-pill">
+        <div class="source-name">Conqueror</div>
+        <div class="source-tag">Bowling</div>
+      </div>
+      <div class="source-pill">
+        <div class="source-name">Rex</div>
+        <div class="source-tag">Online</div>
+      </div>
+      <div class="source-pill">
+        <div class="source-name">501 Fund</div>
+        <div class="source-tag">Darts</div>
+      </div>
+    </div>
+
+    <div class="connectors">
+      <div class="connector"></div>
+      <div class="connector"></div>
+      <div class="connector"></div>
+      <div class="connector"></div>
+      <div class="connector"></div>
+      <div class="connector"></div>
+    </div>
+
+    <!-- MIDDLE LAYER -->
+    <div class="operating-layer">
+      <div class="operating-label">Layer 02 / The Operating Layer — Star Lanes Command</div>
+      <h3 class="operating-headline">One <em>customer record</em>, one <em>revenue ledger</em>, one <em>source of truth.</em></h3>
+
+      <div class="operating-functions">
+        <div class="op-function">
+          <div class="op-fn-num">FN · 01</div>
+          <div class="op-fn-title">Identity match</div>
+          <div class="op-fn-body">Same email, phone, or card token across systems collapses into one customer record — bar tab, game card, lane time, event spend.</div>
+        </div>
+        <div class="op-function">
+          <div class="op-fn-num">FN · 02</div>
+          <div class="op-fn-title">Revenue classifier</div>
+          <div class="op-fn-body">Every transaction tagged: realized revenue, deposit, deferred, prepaid package, comped consumption, gift card. Automatically.</div>
+        </div>
+        <div class="op-function">
+          <div class="op-fn-num">FN · 03</div>
+          <div class="op-fn-title">Event reconciler</div>
+          <div class="op-fn-body">Beverage packages, venue rentals, F&amp;B packages — separated from inventory comp checks before they hit the books.</div>
+        </div>
+        <div class="op-function">
+          <div class="op-fn-num">FN · 04</div>
+          <div class="op-fn-title">Daily digest</div>
+          <div class="op-fn-body">One number for yesterday's revenue, one number for deferred deposits, one list of exceptions for your accountant to review.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="connectors">
+      <div class="connector"></div>
+      <div class="connector"></div>
+      <div class="connector"></div>
+      <div class="connector"></div>
+    </div>
+
+    <!-- BOTTOM LAYER -->
+    <div class="layer-label">Layer 03 / Outputs — what your team and your books actually see</div>
+    <div class="destinations">
+      <div class="dest-pill">
+        <div class="dest-name">R365</div>
+        <div class="dest-desc">Clean entries · No reversals</div>
+      </div>
+      <div class="dest-pill">
+        <div class="dest-name">Loyalty</div>
+        <div class="dest-desc">Full-spend customer profile</div>
+      </div>
+      <div class="dest-pill">
+        <div class="dest-name">Operator dash</div>
+        <div class="dest-desc">Daily truth, one screen</div>
+      </div>
+      <div class="dest-pill">
+        <div class="dest-name">Multi-unit view</div>
+        <div class="dest-desc">Polaris + OSU, one report</div>
+      </div>
+      <div class="dest-pill">
+        <div class="dest-name">Monday Morning QB</div>
+        <div class="dest-desc">Weekly + monthly analyst brief</div>
+      </div>
+    </div>
+
+    <div class="arch-callouts">
+      <div class="callout">
+        <div class="callout-label">Read-only at first</div>
+        Nothing in your production stack changes on day one. The layer listens, normalizes, and reports. Writing back happens only after the data is trustworthy.
+      </div>
+      <div class="callout">
+        <div class="callout-label">Vendor-agnostic</div>
+        If you swap Hot Schedules for a new HR tool, or migrate Compeat to R365 — the layer doesn't break. It pulls from sources, not from a specific brand.
+      </div>
+      <div class="callout">
+        <div class="callout-label">Unit-portable</div>
+        When OSU opens, you don't rebuild this. You connect a second instance of the same source systems and the layer treats them as Location 02.
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MMQ FEATURE SPOTLIGHT ============ -->
+  <div style="margin: 80px 0 96px; padding: 48px 40px; background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%); border: 1px solid var(--line); border-left: 3px solid var(--financial);">
+    <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start;">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 24px;">
+          <span class="dot"></span>
+          One of the layer's outputs
+        </div>
+        <h2 style="font-family: 'Fraunces', serif; font-size: clamp(28px, 3.4vw, 38px); line-height: 1.15; letter-spacing: -0.02em; font-weight: 400; margin: 0 0 20px;">
+          Monday Morning <em style="color: var(--financial); font-style: italic;">Quarterback.</em>
+        </h2>
+        <p style="font-family: 'Fraunces', serif; font-style: italic; font-size: 18px; line-height: 1.45; color: var(--paper-dim); margin: 0;">
+          A weekly strategic read of your data, on a schedule.
+        </p>
+      </div>
+
+      <div style="font-size: 14px; line-height: 1.65; color: var(--paper);">
+        <p style="margin: 0 0 14px;">Once the operating layer is unifying your data, an AI analyst can produce the kind of weekly read a strategic operator runs on a business — last week's wins, last week's misses, the two or three things to watch this week. <strong>Not a dashboard summary.</strong> Pattern analysis. The kind of read that takes a senior person hours to do manually, every week.</p>
+        <p style="margin: 0 0 14px;">Then once a month, a longer strategic look across the venue. The kind of analysis you'd assign to a COO, a CFO, or a strong outside consultant — but at the cadence and consistency only software can deliver.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line);">
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--financial); margin-bottom: 8px;">Weekly digest · Monday 7am</div>
+            <div style="color: var(--paper-dim); line-height: 1.55;">A page or two. Last week's wins, misses, and the two or three things to watch this week. Built to be read with coffee.</div>
+          </div>
+          <div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--financial); margin-bottom: 8px;">Monthly deep-dive · 1st of month</div>
+            <div style="color: var(--paper-dim); line-height: 1.55;">A longer strategic read. Unit economics, customer cohort behavior, event pricing patterns, OSU readiness signals once it opens.</div>
+          </div>
+        </div>
+
+        <p style="margin: 24px 0 0; font-size: 13px; color: var(--paper-dim); font-style: italic; border-left: 2px solid var(--financial); padding-left: 16px;">
+          <strong style="color: var(--paper); font-style: normal;">Sample insight</strong> &mdash; "Hilton Polaris ran 18% over their bev package three of the last four events. The pricing assumption on this account is broken. Erin should requote before the May booking."
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2: THE RESOLUTION CASE STUDY ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 02</div>
+    <div>
+      <h2 class="section-title">The same guest, one record</h2>
+      <p class="section-sub">In Block A, this customer's Friday night produced four different versions of the truth. Here's what the same night looks like with the operating layer in place.</p>
+    </div>
+  </div>
+
+  <div class="resolution-frame">
+    <div class="scenario">
+      <span class="quote-mark">"</span>A customer walks in, buys two beers at the bar, drops $40 on a game card, bowls a lane for an hour, and books a corporate event for next month with a $1,000 deposit.<span class="quote-mark">"</span>
+    </div>
+    <div class="scenario-sub">/ ONE GUEST · ONE NIGHT · FOUR SYSTEMS · ONE TRUTH</div>
+
+    <div class="resolution-rows">
+      <div class="resolution-row header">
+        <div>System</div>
+        <div>What it records</div>
+        <div>Where it lands</div>
+        <div>Status</div>
+      </div>
+
+      <div class="resolution-row">
+        <div class="col-system">Square</div>
+        <div class="col-says">Records $18 at the bar and the $1,000 deposit. The layer reads both, attributes them to one customer, and routes the deposit to deferred revenue automatically.</div>
+        <div class="col-truth truth-financial">→ Customer + Books</div>
+        <div class="col-status status-correct">Resolved</div>
+      </div>
+
+      <div class="resolution-row">
+        <div class="col-system">Embed</div>
+        <div class="col-says">Records the $40 game card sale. The layer matches the email or phone to the same customer record from the bar tab and the booking.</div>
+        <div class="col-truth truth-customer">→ Same record</div>
+        <div class="col-status status-correct">Resolved</div>
+      </div>
+
+      <div class="resolution-row">
+        <div class="col-system">Conqueror</div>
+        <div class="col-says">Records the lane time. The layer attributes the bowling spend to the same customer profile, with full visit context attached.</div>
+        <div class="col-truth truth-customer">→ Same record</div>
+        <div class="col-status status-correct">Resolved</div>
+      </div>
+
+      <div class="resolution-row">
+        <div class="col-system">Triple Seat</div>
+        <div class="col-says">Holds the event booking and the $1,000 as a future-dated liability. The layer keeps Triple Seat as the source of truth for events and prevents Square from double-counting.</div>
+        <div class="col-truth truth-event">→ Books, correctly</div>
+        <div class="col-status status-correct">Resolved</div>
+      </div>
+
+      <div class="resolution-row">
+        <div class="col-system">R365</div>
+        <div class="col-says">Receives one clean entry: $108 realized F&amp;B + bowling + arcade revenue, $1,000 in deferred event deposits. No journal reversal needed at month-end.</div>
+        <div class="col-truth truth-financial">→ Books, automatically</div>
+        <div class="col-status status-correct">Resolved</div>
+      </div>
+    </div>
+
+    <div class="verdict">
+      <div>
+        <div class="verdict-label">The customer side</div>
+        <div class="verdict-text">One person, <span class="accent-good">one record</span>, $108 in actual spend tied to a $1,000 future event — the kind of customer your loyalty program should treat differently than a once-a-quarter bowler.</div>
+      </div>
+      <div>
+        <div class="verdict-label">The accounting side</div>
+        <div class="verdict-text">Books reflect <span class="accent-money">$108 realized, $1,000 deferred</span> on the day it happens. <span class="accent-good">No reversal at month-end.</span> No five-hour weekly cleanup.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 3: THREE NON-NEGOTIABLES ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 03</div>
+    <div>
+      <h2 class="section-title">Three things this has to do, no exceptions</h2>
+      <p class="section-sub">Whatever gets built has to clear all three of these bars on day one. Anything that fails one of them is a different project — and not the one Star Lanes needs.</p>
+    </div>
+  </div>
+
+  <div class="non-neg">
+    <div class="nn-card">
+      <div class="nn-num">NON-NEGOTIABLE · 01</div>
+      <h3 class="nn-title">Nothing breaks <em>on day one.</em></h3>
+      <p class="nn-body">Read-only deployment. Your team rings transactions the same way. Square, Triple Seat, Embed, Conqueror operate exactly as they do today. The layer listens — nothing more — until you trust it.</p>
+    </div>
+    <div class="nn-card">
+      <div class="nn-num">NON-NEGOTIABLE · 02</div>
+      <h3 class="nn-title">Built for <em>two locations,</em> not one.</h3>
+      <p class="nn-body">Every architectural choice gets made for the OSU build, not just Polaris. The day OSU opens, you connect a second instance and roll out a multi-location dashboard — you don't rebuild.</p>
+    </div>
+    <div class="nn-card">
+      <div class="nn-num">NON-NEGOTIABLE · 03</div>
+      <h3 class="nn-title">Owned by you, <em>not the vendor.</em></h3>
+      <p class="nn-body">Customer data, revenue ledger, integration code — all live in your environment. If you ever sell, the buyer gets the operating system. No vendor lock that costs you leverage at the table.</p>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: WHAT THIS IS NOT ============ -->
+  <div class="not-section">
+    <div class="not-grid">
+      <div>
+        <h2 class="not-headline">What this is <em>not.</em></h2>
+        <p style="color: var(--paper-dim); font-size: 15px; line-height: 1.65;">Worth being explicit. The layer above is narrow on purpose. These are the things it deliberately doesn't try to be — because trying would dilute the work and double the timeline.</p>
+      </div>
+      <div class="not-list">
+        <div class="not-item">
+          <span class="x">×</span>
+          <span><strong>Not a replacement for Square, Triple Seat, or any of your POS systems.</strong> Those tools stay exactly where they are.</span>
+        </div>
+        <div class="not-item">
+          <span class="x">×</span>
+          <span><strong>Not an AI phone agent.</strong> You already heard the negative feedback from UWM rolling that out. I'm not going there.</span>
+        </div>
+        <div class="not-item">
+          <span class="x">×</span>
+          <span><strong>Not a website chatbot.</strong> Your agency is handling that on Go High Level. Out of scope here.</span>
+        </div>
+        <div class="not-item">
+          <span class="x">×</span>
+          <span><strong>Not an SEO or AI-search optimization play.</strong> You're already doing that work and doing it well.</span>
+        </div>
+        <div class="not-item">
+          <span class="x">×</span>
+          <span><strong>Not a marketing automation engine.</strong> Go High Level can keep doing campaigns; this layer just hands it cleaner customer data to work with.</span>
+        </div>
+        <div class="not-item">
+          <span class="x">×</span>
+          <span><strong>Not a one-vendor lock-in.</strong> If you change accounting platforms, HR platforms, or POS in the future, the layer adapts. Your sources can change without rebuilding the brain.</span>
+        </div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ============ DIVIDER: BLOCK D ============ -->
+  <section class="block-divider" id="block-d">
+    <div class="divider-grid">
+      <div class="divider-num">&sect; D</div>
+      <div class="divider-content">
+        <div class="divider-block-num">Block D of E</div>
+        <h2 class="divider-title">Two Paths <em>Forward</em></h2>
+        <p class="divider-tagline">Pick the one that matches where Star Lanes actually is.</p>
+      </div>
+      <div class="divider-marker">CHOICE</div>
+    </div>
+  </section>
+
+<div class="block-content"><!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="intro-lead">
+      Two real options. Two different answers to <span class="accent">where Star Lanes is headed</span> over the next 18 months — not two flavors of the same project.
+    </div>
+    <div class="intro-body">
+      <p>The question isn't <em>"what's the right price"</em> — it's <em>"how much of the operating system do you want to fix right now."</em> Each path below answers that question differently.</p>
+      <p>One is the full single-location fix — Polaris running clean, paying for itself in the first year. One is built for OSU from day one and protects the three-unit endgame.</p>
+      <p><strong>Both are priced against a real alternative.</strong> Diverted River quoted you <strong>~$5K–6K per system to integrate, plus a $25K upfront fee, plus $1,000/month.</strong> At eleven systems, that's ~$80K in year one alone — for partial delivery, after a year of waiting. The pricing below reflects that comparison honestly.</p>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 1: THREE PATHS ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 01</div>
+    <div>
+      <h2 class="section-title">The two paths</h2>
+      <p class="section-sub">Each path is a complete project, not a tier. Pick the one that matches where Star Lanes actually is — single-store fix today, or two-store build that's ready when OSU opens.</p>
+    </div>
+  </div>
+
+  <div class="paths">
+
+    <!-- PATH 1 — SINGLE-STORE -->
+    <div class="path" data-path="1">
+      <div class="path-header">
+        <div class="path-tag">Path 01 / Single-Store Build</div>
+        <h3 class="path-name">The Fix.</h3>
+        <p class="path-question">"Get Polaris running clean. I'll deal with OSU when I have to."</p>
+        <div class="path-price">
+          <div class="path-price-figure"><span class="currency">$</span>39,900</div>
+          <div class="path-price-unit">3 × $13,300 monthly</div>
+        </div>
+        <div class="path-recurring">6–8 week build · Polaris only</div>
+      </div>
+      <div class="path-body">
+        <p class="path-summary">
+          The full operating layer from Block C, deployed at Polaris. <strong>Every moment in Block B addressed.</strong> One customer record across systems, clean R365 entries, no more morning cross-checking marathon.
+        </p>
+
+        <div class="path-includes-label">What you get</div>
+        <ul class="path-includes">
+          <li>Unified data layer across all 6 of your revenue systems</li>
+          <li>Auto-classified revenue: deposits, deferred, comped, gift card</li>
+          <li>Daily operator digest + Square Loyalty bridge with full customer spend</li>
+          <li><strong>Monday Morning Quarterback</strong> — weekly digest + monthly deep-dive, the kind of strategic read a senior operator runs on the data</li>
+          <li><strong>First 3 months included:</strong> support + Monday Morning Quarterback. After that: $500/mo support, $300/mo MMQ — both optional, independent.</li>
+        </ul>
+
+        <div class="path-meta">
+          <div class="path-meta-cell">
+            <div class="path-meta-label">Timeline</div>
+            <div class="path-meta-value">6–8 weeks</div>
+          </div>
+          <div class="path-meta-cell">
+            <div class="path-meta-label">Scope</div>
+            <div class="path-meta-value">Polaris only</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PATH 2 — TWO-STORE -->
+    <div class="path" data-path="3">
+      <div class="path-header">
+        <div class="path-tag">Path 02 / Two-Store Build</div>
+        <h3 class="path-name">The Endgame.</h3>
+        <p class="path-question">"Build it for OSU from day one. Set up the three-unit exit."</p>
+        <div class="path-price">
+          <div class="path-price-figure"><span class="currency">$</span>49,900</div>
+          <div class="path-price-unit">4 × $12,475 monthly</div>
+        </div>
+        <div class="path-recurring">10–12 week build · Polaris + OSU-ready</div>
+      </div>
+      <div class="path-body">
+        <p class="path-summary">
+          Everything in Path 01, plus the architecture that makes OSU a connection — not a rebuild. <strong>Multi-location dashboard from launch. Acquisition-ready reporting structure.</strong> The operating system that earns the multiple.
+        </p>
+
+        <div class="path-includes-label">What you get — beyond Path 01</div>
+        <ul class="path-includes">
+          <li>Multi-tenant architecture — OSU connects in days, not months</li>
+          <li>Cross-location loyalty + unit-economics reporting from launch</li>
+          <li>Acquisition-readiness data package: clean, auditable, exportable</li>
+          <li>Cross-location <strong>Monday Morning Quarterback</strong> — both venues analyzed together each week</li>
+          <li><strong>First 3 months included:</strong> support + Monday Morning Quarterback. After that: $500/mo support, $300/mo MMQ — both optional, independent.</li>
+        </ul>
+
+        <div class="path-meta">
+          <div class="path-meta-cell">
+            <div class="path-meta-label">Timeline</div>
+            <div class="path-meta-value">10–12 weeks</div>
+          </div>
+          <div class="path-meta-cell">
+            <div class="path-meta-label">Scope</div>
+            <div class="path-meta-value">Polaris + OSU-ready</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ THE COMPARISON CALLOUT ============ -->
+  <div style="background: linear-gradient(180deg, var(--ink-2) 0%, var(--ink-3) 100%); border: 1px solid var(--line); border-left: 3px solid var(--financial); padding: 48px 40px; margin-bottom: 64px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 24px;">
+          <span class="dot"></span>
+          The real comparison
+        </div>
+        <h2 style="font-family: 'Fraunces', serif; font-size: 32px; line-height: 1.2; letter-spacing: -0.02em; font-weight: 400; margin: 0;">
+          Two stores with me. Two stores with <em style="color: var(--financial); font-style: italic;">Diverted River.</em>
+        </h2>
+        <p style="margin-top: 20px; font-size: 14px; color: var(--paper-dim); line-height: 1.6;">
+          Same scope. Same eleven systems. Same outcome on paper. The difference is what shows up in your bank account over 24 months — and which one actually ships.
+        </p>
+      </div>
+      <div>
+        <div style="background: var(--ink); border: 1px solid var(--line); padding: 28px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper-dim); margin-bottom: 16px;">2-year cost · two stores</div>
+
+          <div style="display: grid; grid-template-columns: 1fr auto; gap: 12px 24px; align-items: baseline; margin-bottom: 20px;">
+            <div style="font-family: 'Fraunces', serif; font-style: italic; font-size: 16px; color: var(--paper-dim);">Diverted River</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--paper-dim); text-decoration: line-through;">~$182,000</div>
+
+            <div style="font-family: 'Fraunces', serif; font-size: 18px; color: var(--paper);">Path 02 — me</div>
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: var(--financial); font-weight: 700;">$60,400</div>
+          </div>
+
+          <div style="border-top: 1px solid var(--line); padding-top: 16px; font-family: 'Fraunces', serif; font-style: italic; font-size: 18px; color: var(--financial); line-height: 1.4;">
+            You save <strong style="font-style: normal; font-weight: 600;">~$121,600</strong> over 24 months.
+          </div>
+
+          <div style="margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.05em; color: var(--paper-dim); line-height: 1.7;">
+            DR math: $25K upfront + ~9 systems × $6K + $1K/mo × 24 + second-store build year 2.<br>
+            My math: $49,900 build + 3 mo support + 21 mo × $500.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ROI MATH ============ -->
+  <div class="roi-frame">
+    <h2 class="roi-headline">When each path <em>pays for itself.</em></h2>
+    <p class="roi-sub">Real labor math from Block B — accountant time at $40/hr plus your time at $250/hr, five hours each weekly. Doesn't include loyalty program revenue, acquisition multiple impact, or any other upside.</p>
+
+    <table class="roi-table">
+      <thead>
+        <tr>
+          <th>Path</th>
+          <th>Build cost</th>
+          <th>Annual recovery</th>
+          <th>Payback</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-payback">
+          <td class="row-label">01 / Single-Store Build</td>
+          <td class="row-value">$39,900</td>
+          <td class="row-value">$75,400 (Polaris)</td>
+          <td class="row-value">~6 months</td>
+        </tr>
+        <tr class="row-payback">
+          <td class="row-label">02 / Two-Store Build</td>
+          <td class="row-value">$49,900</td>
+          <td class="row-value">$85,800 (Polaris + OSU)</td>
+          <td class="row-value">~7 months</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="roi-note">
+      Labor recovery counts both your sister-in-law's reconciliation hours <strong>and your own time</strong> on the morning cross-checking ritual from Block B. <strong style="color: var(--paper);">Both paths pay back in under a year on labor alone.</strong> That deliberately ignores the things that actually pay back this project: a loyalty program built on real customer data, the avoided $121,600 vs. the Diverted River alternative over 24 months, and the multi-million-dollar exit-table swing in Block E. Those numbers are the real ROI.
+    </p>
+  </div>
+
+  <!-- ============ NEXT STEP ============ -->
+  <div class="next-step">
+    <div class="ns-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 20px;">
+          <span class="dot" style="background: var(--good);"></span>
+          What happens next
+        </div>
+        <h2 class="ns-headline">Pick a path, or push back. <em>Both are useful answers.</em></h2>
+        <p class="ns-body">If one of these matches where Star Lanes actually is, tell me and I'll send a project agreement within 48 hours. If none of them quite fit, that's a conversation I'd rather have than a sale that's wrong for the business. Either way, the next move is yours.</p>
+      </div>
+      <div>
+        <ol class="ns-steps">
+          <li>
+            <div class="ns-num">1</div>
+            <div class="ns-text"><strong>You read this with your sister-in-law and Erin.</strong> <em>The accountant and the events director should both have a vote — they live in the bleeds.</em></div>
+          </li>
+          <li>
+            <div class="ns-num">2</div>
+            <div class="ns-text"><strong>We get on a 30-minute call.</strong> <em>You tell me what's right, what's wrong, and which path matches what Star Lanes actually needs.</em></div>
+          </li>
+          <li>
+            <div class="ns-num">3</div>
+            <div class="ns-text"><strong>I send a one-page agreement.</strong> <em>Scope, deliverables, timeline, payment terms. Signed both ways before any work starts.</em></div>
+          </li>
+          <li>
+            <div class="ns-num">4</div>
+            <div class="ns-text"><strong>Kickoff within two weeks of signing.</strong> <em>Read-only data access first. Nothing in your stack changes until I've earned the trust to touch it.</em></div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ============ DIVIDER: BLOCK E ============ -->
+  <section class="block-divider" id="block-e">
+    <div class="divider-grid">
+      <div class="divider-num">&sect; E</div>
+      <div class="divider-content">
+        <div class="divider-block-num">Block E of E</div>
+        <h2 class="divider-title">The Exit <em>Math</em></h2>
+        <p class="divider-tagline">$49,900 to protect a $3.6M swing.</p>
+      </div>
+      <div class="divider-marker">UPSIDE</div>
+    </div>
+  </section>
+
+<div class="block-content"><!-- ============ INTRO ============ -->
+  <section class="intro">
+    <div class="intro-lead">
+      Block B put an $85,800/year number on the labor tax — your time and your sister-in-law's. That's the visible cost. <span class="accent">This page shows you the bigger one</span> — the one that shows up the day a buyer walks in at three units.
+    </div>
+    <div class="intro-body">
+      <p>You said it yourself: three units is what gets Star Lanes acquirable. The Bowlero–Lucky Strike consolidation is happening in real time. Private equity is actively buying multi-unit FEC operators — and consolidation is accelerating, not slowing down.</p>
+      <p>When a buyer shows up, they're not buying the venue. They're buying the operating system. And the cleaner the operating system, the higher the multiple they'll pay.</p>
+      <p><strong>This block puts a real number on what dirty data costs at the closing table.</strong> The math uses public industry multiples and conservative assumptions. Every input is shown — push back on any of them and the answer redoes itself.</p>
+    </div>
+  </section>
+
+  <!-- ============ HERO NUMBER ============ -->
+  <section class="hero-number">
+    <div class="hero-label">/ THE EXIT-TABLE BLEED</div>
+    <div class="hero-figure"><span class="currency">$</span>3.6M</div>
+    <div class="hero-sub">is the swing between a 4× and a 5× multiple at three units.</div>
+    <div class="hero-caveat">A buyer paying $14.4M for dirty books versus $18M for clean ones is the same business — different operating system. The $49,900 Path 02 build is what closes the gap.</div>
+  </section>
+
+  <!-- ============ SECTION 1: WHAT THE INDUSTRY ACTUALLY PAYS ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 01</div>
+    <div>
+      <h2 class="section-title">What buyers are paying right now</h2>
+      <p class="section-sub">EBITDA multiples in the bowling and entertainment-venue space, drawn from 2025–2026 industry data and live listing comps. The range is the first thing a buyer's banker tells them — it's not a secret, and it's not negotiable on the upper end without a reason.</p>
+    </div>
+  </div>
+
+  <div class="multiples-frame">
+    <h2 class="mult-headline">A bowling-anchored entertainment venue trades at <em>3× to 6× EBITDA</em> — the question is which end of the range you're on.</h2>
+    <p class="mult-sub">Star Lanes is not a small legacy alley. It's a 35,000+ sq ft entertainment-driven venue with corporate events, a VIP room, and multiple revenue centers. That puts the natural multiple in the upper half of the range — but only if the financials hold up under diligence.</p>
+
+    <div class="mult-grid">
+      <div class="mult-cell">
+        <div class="mult-tier">Tier 01 / Bottom</div>
+        <div class="mult-multiple mult-multiple-1">3<span class="x">×</span></div>
+        <div class="mult-tier-name">Small legacy alley</div>
+        <div class="mult-tier-desc">Older bowling-only operator, owner-dependent, dirty books. Often priced closer to real estate or equipment value than a clean EBITDA multiple.</div>
+      </div>
+
+      <div class="mult-cell">
+        <div class="mult-tier">Tier 02 / Middle</div>
+        <div class="mult-multiple mult-multiple-2">3.7<span class="x">×</span>–4.9<span class="x">×</span></div>
+        <div class="mult-tier-name">Entertainment-driven venue</div>
+        <div class="mult-tier-desc">Where Star Lanes sits today, based on live ask comps. Modern attractions, F&amp;B, events — but operating system reliant on owner and manual processes.</div>
+      </div>
+
+      <div class="mult-cell">
+        <div class="mult-tier">Tier 03 / Top</div>
+        <div class="mult-multiple mult-multiple-3">5<span class="x">×</span>–6<span class="x">×+</span></div>
+        <div class="mult-tier-name">Multi-unit, clean ops, system-of-record</div>
+        <div class="mult-tier-desc">Where Star Lanes can sit at three units with the operating layer in place. Auditable financials, transferable systems, low owner-dependency.</div>
+      </div>
+    </div>
+
+    <div class="mult-citation">
+      Sources: Dealstream Industry Rules of Thumb (bowling alleys), Sigma M&amp;A 2025–2026 sale data (5.50× EBITDA average), Midwest Brokers April 2026 live ask comps (3.7×–4.9× for entertainment-driven venues), Verified Market Research 2026 (Bowlero / Lucky Strike consolidation, AI-driven margin expansion to 25%).
+    </div>
+  </div>
+
+  <!-- ============ SECTION 2: TWO STAR LANES ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 02</div>
+    <div>
+      <h2 class="section-title">Two versions of the same business</h2>
+      <p class="section-sub">Same three units, same revenue, same EBITDA. The only difference is what the operating system looks like when a buyer's diligence team opens the hood.</p>
+    </div>
+  </div>
+
+  <div class="scenarios">
+
+    <!-- DIRTY -->
+    <div class="scenario-card dirty">
+      <div class="scenario-header">
+        <div class="scenario-tag">Scenario A / Without the layer</div>
+        <h3 class="scenario-name">The <em>discount</em> case.</h3>
+        <p class="scenario-tagline">"They couldn't verify what we couldn't show them."</p>
+      </div>
+      <div class="scenario-body">
+        <div class="scenario-math">
+          <div class="math-row">
+            <div class="math-row-label">EBITDA at 3 units (~$1.2M each)</div>
+            <div class="math-row-value">$3.6M</div>
+          </div>
+          <div class="math-row">
+            <div class="math-row-label">Multiple applied (mid-range)</div>
+            <div class="math-row-value">4.0×</div>
+          </div>
+          <div class="math-row">
+            <div class="math-row-label">Diligence-driven adjustments</div>
+            <div class="math-row-value">— deferred deposits</div>
+          </div>
+          <div class="math-row">
+            <div class="math-row-label">Reconciliation work post-LOI</div>
+            <div class="math-row-value">— 4–6 weeks delay</div>
+          </div>
+          <div class="math-row total">
+            <div class="math-row-label">Walk-away valuation</div>
+            <div class="math-row-value">$14.4M</div>
+          </div>
+        </div>
+        <div class="scenario-quote">
+          The buyer's QofE report flags revenue recognition issues. Earnings get "normalized" downward. The multiple gets pinned to mid-range because the data isn't auditable. Every soft number is rounded against you.
+        </div>
+      </div>
+    </div>
+
+    <!-- CLEAN -->
+    <div class="scenario-card clean">
+      <div class="scenario-header">
+        <div class="scenario-tag">Scenario B / With the layer</div>
+        <h3 class="scenario-name">The <em>premium</em> case.</h3>
+        <p class="scenario-tagline">"Clean books, repeatable ops, transferable system."</p>
+      </div>
+      <div class="scenario-body">
+        <div class="scenario-math">
+          <div class="math-row">
+            <div class="math-row-label">EBITDA at 3 units (~$1.2M each)</div>
+            <div class="math-row-value">$3.6M</div>
+          </div>
+          <div class="math-row">
+            <div class="math-row-label">Multiple applied (top of range)</div>
+            <div class="math-row-value">5.0×</div>
+          </div>
+          <div class="math-row">
+            <div class="math-row-label">Diligence-driven adjustments</div>
+            <div class="math-row-value">— minimal</div>
+          </div>
+          <div class="math-row">
+            <div class="math-row-label">Reconciliation work post-LOI</div>
+            <div class="math-row-value">— days, not weeks</div>
+          </div>
+          <div class="math-row total">
+            <div class="math-row-label">Premium valuation</div>
+            <div class="math-row-value">$18.0M</div>
+          </div>
+        </div>
+        <div class="scenario-quote">
+          Buyers can see the financials live, in a dashboard. Customer data is owned and transferable. Unit economics are repeatable. The multiple holds at the top of the range because nothing in diligence makes them flinch.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============ SECTION 3: THE GAP ============ -->
+  <div class="the-gap">
+    <div class="gap-label">The valuation swing</div>
+    <div class="gap-figure"><span class="currency">$</span>3.6M</div>
+    <p class="gap-text">A one-turn multiple swing on $3.6M of EBITDA. That's the difference between Scenario A and Scenario B — and it has nothing to do with the venue. It has to do with the operating system underneath it.</p>
+    <div class="gap-comparison">
+      <div class="gap-comp-cell"><strong>Cost to build the layer</strong><br />$49,900</div>
+      <div class="gap-comp-arrow">→</div>
+      <div class="gap-comp-cell"><span class="highlight">72× return</span><br />if it shifts the multiple by one turn</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: WHAT BUYERS ACTUALLY ASK ============ -->
+  <div class="section-header">
+    <div class="section-num">§ 03</div>
+    <div>
+      <h2 class="section-title">What buyers actually ask in the data room</h2>
+      <p class="section-sub">These are the five questions every PE buyer or strategic acquirer asks in diligence on a multi-unit operator. The "now" column is what you can answer today. The "after" column is what the operating layer puts in your hand before the buyer walks in.</p>
+    </div>
+  </div>
+
+  <div class="questions">
+
+    <div class="question">
+      <div class="q-num">Q · 01</div>
+      <p class="q-text">"Can I see your financials right now — in a dashboard, not a spreadsheet?"</p>
+      <div class="q-status">
+        <div class="q-state">
+          <div class="q-state-label">Today</div>
+          <div class="q-state-now">3 spreadsheets, 2 systems, manual reconciliation</div>
+        </div>
+        <div class="q-state">
+          <div class="q-state-label">After</div>
+          <div class="q-state-after">One dashboard, real-time, multi-location</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-num">Q · 02</div>
+      <p class="q-text">"What happens to revenue recognition when the owner steps away?"</p>
+      <div class="q-status">
+        <div class="q-state">
+          <div class="q-state-label">Today</div>
+          <div class="q-state-now">Sister-in-law holds the workarounds in her head</div>
+        </div>
+        <div class="q-state">
+          <div class="q-state-label">After</div>
+          <div class="q-state-after">Classification rules live in code, not people</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-num">Q · 03</div>
+      <p class="q-text">"How do I integrate this into our existing portfolio?"</p>
+      <div class="q-status">
+        <div class="q-state">
+          <div class="q-state-label">Today</div>
+          <div class="q-state-now">Custom integration project, $1M+ post-close</div>
+        </div>
+        <div class="q-state">
+          <div class="q-state-label">After</div>
+          <div class="q-state-after">Standard data exports from a documented architecture</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-num">Q · 04</div>
+      <p class="q-text">"Can I trust the numbers — under audit?"</p>
+      <div class="q-status">
+        <div class="q-state">
+          <div class="q-state-label">Today</div>
+          <div class="q-state-now">QofE flags multiple normalization adjustments</div>
+        </div>
+        <div class="q-state">
+          <div class="q-state-label">After</div>
+          <div class="q-state-after">QofE confirms — system-generated, auditable</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-num">Q · 05</div>
+      <p class="q-text">"Who owns the customer data — and can it transfer?"</p>
+      <div class="q-status">
+        <div class="q-state">
+          <div class="q-state-label">Today</div>
+          <div class="q-state-now">Fragmented across Square, Embed, Triple Seat, Rex</div>
+        </div>
+        <div class="q-state">
+          <div class="q-state-label">After</div>
+          <div class="q-state-after">Unified customer database, owned by the entity</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="question">
+      <div class="q-num">Q · 06</div>
+      <p class="q-text">"What do I have to spend to fix this after closing?"</p>
+      <div class="q-status">
+        <div class="q-state">
+          <div class="q-state-label">Today</div>
+          <div class="q-state-now">$1–2M post-close, comes out of your price</div>
+        </div>
+        <div class="q-state">
+          <div class="q-state-label">After</div>
+          <div class="q-state-after">Already done. Buyer walks in, layer is running</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="questions-source">
+    The five-question framework comes from how PE diligence teams actually score deals on multi-unit service operators. The principle is the same across industries: <strong>buyers can't price what they can't verify, so they assume the worst.</strong> The cleaner the operating system, the less they have to assume — and the higher the multiple holds.
+  </p>
+
+  <!-- ============ SECTION 5: THE PUNCH LINE ============ -->
+  <div class="roi-frame" style="margin-top: 96px;">
+    <div class="roi-grid">
+      <div>
+        <div class="eyebrow" style="margin-bottom: 24px;">
+          <span class="dot"></span>
+          The math, one more time
+        </div>
+        <h2 class="roi-headline">$49,900 to protect a <em>$3.6M swing</em> at the closing table.</h2>
+      </div>
+      <div class="roi-body">
+        <p>Path 02 is not a $49,900 decision about reconciliation work. It's a one-turn multiple decision on a future $18M sale. Even at half the swing — half a turn instead of a full one — the math is still <strong>36× return on the build cost.</strong></p>
+        <p>None of this assumes the venue grows, the EBITDA grows, or the multiple stretches into top-of-range territory. It assumes a normal three-unit Star Lanes selling to a normal buyer at normal industry multiples. Everything beyond that is upside.</p>
+        <p><strong>The audit cost is rounding error against the exit math.</strong> The only question is whether you want to be Scenario A or Scenario B when a buyer walks in.</p>
+        <div class="roi-ratio">
+          <div class="roi-ratio-label">Build cost vs. exit-table swing</div>
+          <div class="roi-ratio-figure">$49,900 <em>→</em> $3,600,000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DISCLAIMER ============ -->
+  <div class="disclaimer">
+    <div class="disclaimer-label">A note on the math</div>
+    Everything on this page is built from public industry data and conservative assumptions about Star Lanes' future EBITDA at three units. <strong>The $1.2M per-unit EBITDA figure is illustrative</strong> — it sits within the range of comparable bowling-anchored entertainment venues but isn't drawn from your books. The multiple range (3×–6×) is sourced from 2025–2026 industry valuation data. <strong>The point isn't the precise dollar amount. The point is the relationship</strong> — that a one-turn multiple swing on a multi-unit FEC operator dwarfs anything you'd spend on the operating layer that prevents the swing in the first place. If your actual EBITDA at three units lands at $1.5M or $2M, the swing gets bigger, not smaller.
+  </div></div>
+
+  <!-- ============ CLOSING / NEXT STEPS ============ -->
+  <section class="closing-page">
+    <div class="closing-eyebrow">
+      <span class="dot"></span>
+      What happens next
+    </div>
+    <h2 class="closing-headline">Pick a path, or push back. <em>Both are useful answers.</em></h2>
+    <div class="closing-body">
+      <p>If one of the two paths in Block D matches where Star Lanes actually is, tell me and I&rsquo;ll send a project agreement within 48 hours. If neither fits, that&rsquo;s a conversation I&rsquo;d rather have than a sale that&rsquo;s wrong for the business.</p>
+      <p>Either way, the next move is yours. <strong>Read this with your sister-in-law and Erin. The accountant and the events director both have a vote &mdash; they live in the bleeds I&rsquo;ve described above.</strong> Then call me, text me, or email me whenever you&rsquo;re ready.</p>
+    </div>
+
+    <div class="closing-signature">
+      <div>
+        <div class="sig-block-label">Author</div>
+        <div class="sig-block-name">Justin Leffew</div>
+        <div class="sig-block-detail">Founder, Blueprint AI<br>Columbus, Ohio<br>blueprintai.cc</div>
+      </div>
+      <div>
+        <div class="sig-block-label">For</div>
+        <div class="sig-block-name">Doug Mechling</div>
+        <div class="sig-block-detail">Owner, Star Lanes Polaris<br>April 2026<br>Pricing valid through June 30, 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="doc-footer">
+    <div>The Star Lanes Blueprint &middot; <strong>Five blocks, one operating diagnosis</strong></div>
+    <div>Blueprint AI &middot; <strong>blueprintai.cc</strong></div>
+  </footer>
+
+</div>
+
+<a href="#" class="back-to-top" id="backToTop" title="Back to top" aria-label="Back to top">↑</a>
+
+<script>
+  // Show back-to-top button after scrolling past the cover
+  (function() {
+    const btn = document.getElementById('backToTop');
+    const threshold = 600;
+    function update() {
+      if (window.scrollY > threshold) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    update();
+  })();
+</script>
+
+</body>
+</html>
