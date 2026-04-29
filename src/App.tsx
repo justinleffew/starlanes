@@ -57,7 +57,7 @@ function App() {
         />
       )}
       {active === 'customers' && <CustomerScreen customerId={selectedCustomerId} />}
-      {active === 'multi-unit' && <MultiUnitScreen onOpenOffer={setOfferId} />}
+      {active === 'multi-unit' && <MultiUnitScreen />}
 
       <ExceptionDrawer item={selected} onClose={() => setSelected(null)} onStatus={updateStatus} />
 
