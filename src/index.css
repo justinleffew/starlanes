@@ -1,17 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  color: #2f2418;
-  background: #fcfaf5;
-}
-
-body {
-  margin: 0;
-  background: #fcfaf5;
-  color: #2f2418;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 13.5px;
+  color: #1a1a17;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: #faf8f3;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(194, 104, 10, 0.025), transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(74, 107, 133, 0.02), transparent 50%);
+  background-attachment: fixed;
+  color: #1a1a17;
+  font-family: 'Inter Tight', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+button { font-family: inherit; }
+
+input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+@layer utilities {
+  .num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .num-fig {
+    font-family: 'Fraunces', serif;
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a8678;
+  }
+
+  .h-page {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #1a1a17;
+  }
+
+  .h-page em {
+    font-style: italic;
+    color: #c2680a;
+    font-weight: 400;
+  }
+
+  .h-section {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #1a1a17;
+  }
+
+  .currency-prefix {
+    font-size: 0.6em;
+    color: #8a8678;
+    font-style: italic;
+    margin-right: 2px;
+    vertical-align: top;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+  }
+}
+
+@media (max-width: 880px) {
+  .h-page { font-size: clamp(22px, 6vw, 28px); }
+}
+@media (max-width: 480px) {
+  .h-page { font-size: 22px; }
+}
